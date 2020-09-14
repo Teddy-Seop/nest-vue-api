@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity, UserEntity } from '@/models/entities/';
+import { listeners } from 'process';
 
 @Injectable()
 export class PostsService {
@@ -12,14 +13,17 @@ export class PostsService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  public async getPostList(): Promise<Array<PostsEntity>> {
-    const postList = await this.postsRepository.find();
+  public async getPostList() {
+    let postList = await this.postsRepository.find({
+      relations: ['user']
+    });
     return postList;
   }
 
   public async getPost(postId: number): Promise<PostsEntity> {
     const post = await this.postsRepository.findOneOrFail({
       where: { id: postId },
+      relations: ['user']
     });
     return post;
   }
@@ -29,18 +33,6 @@ export class PostsService {
   }
 
   public async test(): Promise<PostsEntity> {
-    const post = await this.postsRepository.findOne({
-      where: {
-        id: 1,
-      },
-    });
-    const user = await this.userRepository.findOne({
-      where: {
-        id: post.userId,
-      },
-    });
-    post.user = user;
-    console.log(post);
-    return post;
+    return null;
   }
 }
