@@ -14,8 +14,8 @@ export class PostsService {
   ) {}
 
   public async getPostList() {
-    let postList = await this.postsRepository.find({
-      relations: ['user']
+    const postList = await this.postsRepository.find({
+      relations: ['user'],
     });
     return postList;
   }
@@ -23,7 +23,7 @@ export class PostsService {
   public async getPost(postId: number): Promise<PostsEntity> {
     const post = await this.postsRepository.findOneOrFail({
       where: { id: postId },
-      relations: ['user']
+      relations: ['user'],
     });
     return post;
   }

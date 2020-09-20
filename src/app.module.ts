@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { NestSessionOptions, SessionModule } from 'nestjs-session';
 
 import { DatabaseModule } from './models';
 
@@ -11,6 +12,9 @@ import { LikesModule } from './api/likes/likes.module';
   imports: [
     // Global Modules
     DatabaseModule,
+    SessionModule.forRoot({
+      session: { secret: 'keyboard cat' },
+    }),
 
     // Controller Modules
     UserModule,
