@@ -28,4 +28,11 @@ export class UserService {
       return false;
     }
   }
+
+  public async findByEmail(email: string): Promise<UserEntity> {
+    const userEntity = await this.userRepository.findOneOrFail({
+      where: { email: email },
+    });
+    return userEntity;
+  }
 }
