@@ -8,7 +8,7 @@ import { UserModule } from './api/user';
 import { PostsModule } from './api/posts';
 import { CommentsModule } from './api/comments';
 import { LikesModule } from './api/likes/likes.module';
-
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     // Global Modules
@@ -17,6 +17,7 @@ import { LikesModule } from './api/likes/likes.module';
       session: { secret: 'keyboard cat' },
     }),
     AuthModule,
+    // JwtModule,
 
     // Controller Modules
     UserModule,
