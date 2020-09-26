@@ -11,12 +11,6 @@ export class UserController {
   constructor(private readonly userService: UserService, private authService: AuthService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/profile')
-  getProfile(@Req() req) {
-    return req.user;
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get(':userId')
   public async getUser(@Param('userId') userId: number): Promise<UserEntity> {
     let userEntity: UserEntity;

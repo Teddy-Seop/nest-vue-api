@@ -38,7 +38,7 @@ export class CommentsEntity {
 
     @ManyToOne(
         type => PostsEntity,
-        entity => entity.comments
+        entity => entity.comments,
     )
     posts: PostsEntity;
 }

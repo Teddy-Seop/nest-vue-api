@@ -1,19 +1,14 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  HttpException,
-  HttpStatus,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, HttpException, HttpStatus, Body, UseGuards, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsEntity } from '@/models/entities';
+
+import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
 
 @Controller('/posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('')
   public async getPostList(): Promise<Array<PostsEntity>> {
     let postList: Array<PostsEntity>;
@@ -25,6 +20,7 @@ export class PostsController {
     return postList;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':postId')
   public async getPost(@Param('postId') postId: number): Promise<PostsEntity> {
     let post: PostsEntity;
@@ -39,19 +35,27 @@ export class PostsController {
     return post;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('')
   public async addPost(@Body() post: PostsEntity) {
-    console.log(post);
     try {
       await this.postsService.addPost(post);
-    } catch {
-      throw new HttpException(`Can't insert post`, HttpStatus.NOT_FOUND);
+    } catch (error) {
+      throw new HttpException(`Can't insert post`, HttpStatus.METHOD_NOT_ALLOWED);
     }
   }
 
-  @Get('/test/test')
-  public async test(): Promise<PostsEntity> {
-    const test = await this.postsService.test();
-    return test;
+  @UseGuards(JwtAuthGuard)
+  @Delete(':postId')
+  public async deletePost(@Param('postId') postId: number) {
+    try {
+      console.log('test')
+      await this.postsService.deletePost(postId);
+
+      return "OK";
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(`Can't delete ${postId}`, HttpStatus.METHOD_NOT_ALLOWED)
+    }
   }
 }

@@ -32,7 +32,11 @@ export class PostsService {
     await this.postsRepository.insert(post);
   }
 
-  public async test(): Promise<PostsEntity> {
-    return null;
+  public async deletePost(postId: number) {
+    await this.postsRepository
+    .createQueryBuilder('posts')
+    .delete()
+    .where("id = :postId", { postId })
+    .execute();
   }
 }

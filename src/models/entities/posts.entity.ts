@@ -39,13 +39,15 @@ export class PostsEntity {
 
     @OneToMany(
         type => CommentsEntity,
-        entity => entity.posts    
+        entity => entity.posts,
+        { cascade: true, nullable: true }
     )
     comments: CommentsEntity[];
 
     @OneToMany(
         type => LikesEntity,
-        entity => entity.posts
+        entity => entity.posts,
+        { cascade: true, nullable: true }
     )
     likes: LikesEntity[];
 }
