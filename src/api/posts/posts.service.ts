@@ -29,7 +29,7 @@ export class PostsService {
   }
 
   public async addPost(post: PostsEntity) {
-    await this.postsRepository.insert(post);
+    await this.postsRepository.save(post);
   }
 
   public async deletePost(postId: number) {
