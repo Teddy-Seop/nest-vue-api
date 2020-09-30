@@ -14,4 +14,8 @@ export class LikesService {
         });
         return like;
     }
+
+    public async likePost(data: LikesEntity) {
+        await this.likesRepository.save(data);
+    }
 }
