@@ -49,7 +49,6 @@ export class PostsController {
   @Delete(':postId')
   public async deletePost(@Param('postId') postId: number) {
     try {
-      console.log('test')
       await this.postsService.deletePost(postId);
 
       return "OK";

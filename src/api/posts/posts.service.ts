@@ -23,7 +23,7 @@ export class PostsService {
   public async getPost(postId: number): Promise<PostsEntity> {
     const post = await this.postsRepository.findOneOrFail({
       where: { id: postId },
-      relations: ['user'],
+      relations: ['user', 'likes'],
     });
     return post;
   }

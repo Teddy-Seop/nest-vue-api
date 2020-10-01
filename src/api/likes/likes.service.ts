@@ -18,4 +18,12 @@ export class LikesService {
     public async likePost(data: LikesEntity) {
         await this.likesRepository.save(data);
     }
+
+    public async unlikePost(postsId: number, userId: number) {
+        await this.likesRepository
+        .createQueryBuilder('likes')
+        .delete()
+        .where("postsId = :postsId AND userId = :userId", { postsId, userId })
+        .execute();
+    }
 }

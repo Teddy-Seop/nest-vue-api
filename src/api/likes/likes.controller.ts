@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { LikesService } from './likes.service';
 import { LikesEntity } from '@/models/entities';
 import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
@@ -23,6 +23,16 @@ export class LikesController {
   public async likePost(@Body() data: LikesEntity) {
     try {
       await this.likesService.likePost(data);
+    } catch (error) {
+      throw new HttpException(`Can't like this post`, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:postsId/:userId')
+  public async unlikePost(@Param('postsId') postsId: number, @Param('userId') userId: number) {
+    try {
+      await this.likesService.unlikePost(postsId, userId);
     } catch (error) {
       throw new HttpException(`Can't like this post`, HttpStatus.METHOD_NOT_ALLOWED);
     }
