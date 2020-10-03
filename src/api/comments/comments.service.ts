@@ -14,4 +14,15 @@ export class CommentsService {
         });
         return comment;
     }
+
+    public async getCommentsList(postsId: number): Promise<CommentsEntity[]> {
+        const commentsList: CommentsEntity[] = await this.commentsRepository.find({
+            where: { postsId: postsId },
+        });
+        return commentsList;
+    }
+
+    public async writeComment(comment: CommentsEntity) {
+        await this.commentsRepository.save(comment);
+    }
 }
