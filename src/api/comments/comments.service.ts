@@ -18,6 +18,7 @@ export class CommentsService {
     public async getCommentsList(postsId: number): Promise<CommentsEntity[]> {
         const commentsList: CommentsEntity[] = await this.commentsRepository.find({
             where: { postsId: postsId },
+            relations: ['user']
         });
         return commentsList;
     }
