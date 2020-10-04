@@ -1,4 +1,4 @@
-import { Controller, Get, Param, HttpException, HttpStatus, UseGuards, Body, Post } from '@nestjs/common';
+import { Controller, Get, Param, HttpException, HttpStatus, UseGuards, Body, Post, Delete } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CommentsEntity } from '@/models/entities';
 import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
@@ -26,5 +26,15 @@ export class CommentsController {
     } catch (error) {
       throw new HttpException(`Can't get comments list`, HttpStatus.METHOD_NOT_ALLOWED);
     }
-}
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  public async deleteComment(@Param('id') id: number) {
+    try {
+      await this.commentService.deleteComment(id);
+    } catch (error) {
+      throw new HttpException(`Can't delete comment`, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+  }
 }

@@ -26,4 +26,12 @@ export class CommentsService {
     public async writeComment(comment: CommentsEntity) {
         await this.commentsRepository.save(comment);
     }
+
+    public async deleteComment(id: number) {
+        await this.commentsRepository
+        .createQueryBuilder('comments')
+        .delete()
+        .where("id = :id", { id })
+        .execute();
+    }
 }
