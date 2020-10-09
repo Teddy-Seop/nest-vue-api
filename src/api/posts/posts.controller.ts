@@ -35,16 +35,25 @@ export class PostsController {
     }
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('')
-  // public async getMostComments(): Promise<IPostList[]> {
-  //   try {
-  //     const post: PostsEntity = await this.postsService.getPostList();
-  //     return post;
-  //   } catch {
-  //     throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED);
-  //   }
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('/top/likes')
+  public async getMostLikes(): Promise<PostsEntity[]> {
+    try {
+      return await this.postsService.getMostLikes();
+    } catch {
+      throw new HttpException(`Can't get top likes post`, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/top/comments')
+  public async getMostComments(): Promise<PostsEntity[]> {
+    try {
+      return await this.postsService.getMostComments();
+    } catch {
+      throw new HttpException(`Can't get top comments post`, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('')

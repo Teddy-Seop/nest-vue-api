@@ -56,9 +56,23 @@ export class PostsService {
     .execute();
   }
 
-  // public async getMostComments() {
-  //   await this.postsRepository.findOneOrFail({
-  //     where: 
-  //   })
-  // }
+  public async getMostLikes() {
+    return await this.postsRepository
+    .createQueryBuilder('posts')
+    .leftJoinAndSelect('posts.likes', 'likes')
+    .loadRelationCountAndMap('posts.likes', 'posts.likes')
+    .orderBy('likes.id', 'DESC')
+    .limit(5)
+    .getMany();
+  }
+
+  public async getMostComments() {
+    return await this.postsRepository
+    .createQueryBuilder('posts')
+    .leftJoinAndSelect('posts.comments', 'comments')
+    .loadRelationCountAndMap('posts.comments', 'posts.comments')
+    .orderBy('comments.id', 'DESC')
+    .limit(5)
+    .getMany();
+  }
 }
