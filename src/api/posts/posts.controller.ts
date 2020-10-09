@@ -3,6 +3,7 @@ import { PostsService } from './posts.service';
 import { PostsEntity } from '@/models/entities';
 
 import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
+import { IPostList } from '@/type/post';
 
 @Controller('/posts')
 export class PostsController {
@@ -10,30 +11,40 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('')
-  public async getPostList(): Promise<Array<PostsEntity>> {
-    let postList: Array<PostsEntity>;
+  public async getPostList(): Promise<IPostList[]> {
+    let postList: IPostList[];
     try {
       postList = await this.postsService.getPostList();
+      return postList;
     } catch {
-      throw new HttpException(`Can't get post list`, HttpStatus.NOT_FOUND);
+      throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED);
     }
-    return postList;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':postId')
   public async getPost(@Param('postId') postId: number): Promise<PostsEntity> {
-    let post: PostsEntity;
     try {
-      post = await this.postsService.getPost(postId);
+      const post: PostsEntity = await this.postsService.getPost(postId);
+      return post;
     } catch (error) {
       throw new HttpException(
         `Not found post by ID: ${postId}`,
         HttpStatus.NOT_FOUND,
       );
     }
-    return post;
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Get('')
+  // public async getMostComments(): Promise<IPostList[]> {
+  //   try {
+  //     const post: PostsEntity = await this.postsService.getPostList();
+  //     return post;
+  //   } catch {
+  //     throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED);
+  //   }
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Post('')

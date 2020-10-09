@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity, UserEntity } from '@/models/entities/';
 import { listeners } from 'process';
+import { IPostList } from '@/type/post';
 
 @Injectable()
 export class PostsService {
@@ -14,10 +15,25 @@ export class PostsService {
   ) {}
 
   public async getPostList() {
-    const postList = await this.postsRepository.find({
-      relations: ['user'],
-    });
-    return postList;
+    return this.postsRepository.find({
+      relations: ['user', 'likes', 'comments'],
+    })
+    .then(postList => {
+      if (!postList) { throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED); }
+      const return_value: IPostList[] = postList.map(post => {
+        return {
+          id: post.id,
+          title: post.title,
+          contents: post.contents,
+          commentCount: post.comments.length,
+          likeCount: post.likes.length,
+          writer: post.user.name,
+          createdAt: post.createdAt,
+        }
+      })
+
+      return return_value;
+    })
   }
 
   public async getPost(postId: number): Promise<PostsEntity> {
@@ -39,4 +55,10 @@ export class PostsService {
     .where("id = :postId", { postId })
     .execute();
   }
+
+  // public async getMostComments() {
+  //   await this.postsRepository.findOneOrFail({
+  //     where: 
+  //   })
+  // }
 }
