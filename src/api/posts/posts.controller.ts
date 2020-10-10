@@ -47,7 +47,7 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/top/comments')
-  public async getMostComments(): Promise<PostsEntity[]> {
+  public async getMostComments(): Promise<PostsEntity[]>{
     try {
       return await this.postsService.getMostComments();
     } catch {

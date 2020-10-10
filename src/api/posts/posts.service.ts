@@ -57,22 +57,34 @@ export class PostsService {
   }
 
   public async getMostLikes() {
-    return await this.postsRepository
+    const return_value = await this.postsRepository
     .createQueryBuilder('posts')
     .leftJoinAndSelect('posts.likes', 'likes')
     .loadRelationCountAndMap('posts.likes', 'posts.likes')
-    .orderBy('likes.id', 'DESC')
-    .limit(5)
-    .getMany();
+    .take(5)
+    .getMany()
+    .then(mostLikesList => {
+      return mostLikesList.sort((a, b) => {
+        return a.likes < b.likes ? 1 : a.likes > b.likes ? -1 : 0;
+      })
+    })
+
+    return return_value;
   }
 
   public async getMostComments() {
-    return await this.postsRepository
+    const return_value = await this.postsRepository
     .createQueryBuilder('posts')
     .leftJoinAndSelect('posts.comments', 'comments')
     .loadRelationCountAndMap('posts.comments', 'posts.comments')
-    .orderBy('comments.id', 'DESC')
-    .limit(5)
-    .getMany();
+    // .take(5)
+    .getMany()
+    .then(mostCommentsList => {
+      return mostCommentsList.sort((a, b) => {
+        return a.comments < b.comments ? 1 : a.comments > b.comments ? -1 : 0;
+      })
+    })
+
+    return return_value;
   }
 }
