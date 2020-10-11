@@ -61,7 +61,6 @@ export class PostsService {
     .createQueryBuilder('posts')
     .leftJoinAndSelect('posts.likes', 'likes')
     .loadRelationCountAndMap('posts.likes', 'posts.likes')
-    .take(5)
     .getMany()
     .then(mostLikesList => {
       return mostLikesList.sort((a, b) => {
@@ -69,7 +68,7 @@ export class PostsService {
       })
     })
 
-    return return_value;
+    return return_value.slice(0, 5);
   }
 
   public async getMostComments() {
@@ -77,7 +76,6 @@ export class PostsService {
     .createQueryBuilder('posts')
     .leftJoinAndSelect('posts.comments', 'comments')
     .loadRelationCountAndMap('posts.comments', 'posts.comments')
-    // .take(5)
     .getMany()
     .then(mostCommentsList => {
       return mostCommentsList.sort((a, b) => {
@@ -85,6 +83,6 @@ export class PostsService {
       })
     })
 
-    return return_value;
+    return return_value.slice(0, 5);
   }
 }
