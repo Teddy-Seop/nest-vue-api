@@ -23,4 +23,4 @@ version-resolver:
   default: patch
 template: |
   $CHANGES
-publish: true
+publish: false
