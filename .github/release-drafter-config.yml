@@ -1,5 +1,5 @@
-name-template: 'v$NEXT_MINOR_VERSION'
-tag-template: 'v$NEXT_MINOR_VERSION'
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
 
 categories:
   - title: '🚀 Features'
@@ -9,8 +9,20 @@ categories:
   - title: 'ETC'
     label: 'documentation'
     
-change-template: '- $TITLE #$NUMBER @$AUTHOR '
+change-template: '- $TITLE #$NUMBER @$AUTHOR'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
 template: |
   ## Uncategorized
   $CHANGES
   ### Bump setup.py version must be included here!
+prerelease: true
