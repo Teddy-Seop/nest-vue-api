@@ -1,0 +1,46 @@
+name: CI-CD-Pipeline
+env:
+  EB_PACKAGE_S3_BUCKET: "pms-notification"
+  EB_APPLICATION: "notification-sms"
+  EB_ENVIRONMENT: "NotificationSms-Dev"
+  DEPLOY_PACKAGE: "notification_${{github.sha}}.zip"
+  AWS_REGION: "ap-northeast-2"
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Git clone repository
+        uses: actions/checkout@v1
+      
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   with:
+      #     tag_name: ${{github.ref}}
+      #     release: Release ${{github.ref}}
+      #     body: |
+      #       Changes in this Release
+      #       - First Change
+      #       - Second Change
+      #     draft: false
+      #     prerelease: false
+      
+      - name: NPM Install
+        run: npm ci
+        
+      - name: Build
+        run: npm run build sms
+      
+      - name: Create ZIP deployment package
+        run: zip -r ${{env.DEPLOY_PACKAGE}} ./ -x *.git*
+      
