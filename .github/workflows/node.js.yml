@@ -9,31 +9,20 @@ env:
 on:
   push:
     branches: [ main ]
-    tags:
-      - 'v*'
 
 jobs:
   CI:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: release-drafter/release-drafter@v5
+        with:
+          config-name: release-drafter-config.yml
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
       - name: Git clone repository
         uses: actions/checkout@v1
-      
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   with:
-      #     tag_name: ${{github.ref}}
-      #     release: Release ${{github.ref}}
-      #     body: |
-      #       Changes in this Release
-      #       - First Change
-      #       - Second Change
-      #     draft: false
-      #     prerelease: false
       
       - name: NPM Install
         run: npm ci

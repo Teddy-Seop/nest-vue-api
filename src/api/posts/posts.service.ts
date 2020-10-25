@@ -59,7 +59,6 @@ export class PostsService {
   public async getMostLikes() {
     const return_value = await this.postsRepository
     .createQueryBuilder('posts')
-    .leftJoinAndSelect('posts.likes', 'likes')
     .loadRelationCountAndMap('posts.likes', 'posts.likes')
     .getMany()
     .then(mostLikesList => {
@@ -74,7 +73,6 @@ export class PostsService {
   public async getMostComments() {
     const return_value = await this.postsRepository
     .createQueryBuilder('posts')
-    .leftJoinAndSelect('posts.comments', 'comments')
     .loadRelationCountAndMap('posts.comments', 'posts.comments')
     .getMany()
     .then(mostCommentsList => {
