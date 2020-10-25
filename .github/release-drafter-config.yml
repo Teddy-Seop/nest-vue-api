@@ -22,4 +22,5 @@ version-resolver:
       - 'patch'
   default: patch
 template: |
+  ## Uncategorized
   $CHANGES
