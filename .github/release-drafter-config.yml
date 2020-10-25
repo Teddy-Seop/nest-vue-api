@@ -24,3 +24,4 @@ version-resolver:
 template: |
   ## Uncategorized
   $CHANGES
+publish: true
