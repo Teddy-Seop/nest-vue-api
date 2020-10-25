@@ -4,13 +4,19 @@ on:
     branches: [ master ]
 
 jobs:
-  CI:
+  Create-Release:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: release-drafter/release-drafter@v5
-        with:
-          config-name: release-drafter-config.yml
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          config-name: release-drafter-config.yml
+          draft: false
+          prelease: false
       
