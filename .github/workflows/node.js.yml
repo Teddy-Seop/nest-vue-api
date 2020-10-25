@@ -13,16 +13,4 @@ jobs:
           config-name: release-drafter-config.yml
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Git clone repository
-        uses: actions/checkout@v1
-      
-      - name: NPM Install
-        run: npm ci
-        
-      - name: Build
-        run: npm run build sms
-      
-      - name: Create ZIP deployment package
-        run: zip -r ${{env.DEPLOY_PACKAGE}} ./ -x *.git*
       
