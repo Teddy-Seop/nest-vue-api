@@ -7,16 +7,8 @@ name: CI-CD-Pipeline
 #   AWS_REGION: "ap-northeast-2"
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version'
-        required: true
-      app:
-        description: 'Application'
-        required: true
-  # release:
-  #   action: released
+  release:
+    action: published
 
 jobs:
   CI:
