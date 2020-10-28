@@ -8,7 +8,8 @@ name: CI-CD-Pipeline
 
 on:
   release:
-    action: published
+    types:
+      - published
 
 jobs:
   CI:
