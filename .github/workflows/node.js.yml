@@ -32,7 +32,7 @@ jobs:
 
       - name: Test echo  
         run: |
-          echo "${{github.ref}}"
+          echo "${{github.ref}}" | grep -E -i -w -o 'api|sms|email'
           echo "${{ github.event.inputs.app }}-${{ github.event.inputs.version }}"
       
       # - name: NPM Install
