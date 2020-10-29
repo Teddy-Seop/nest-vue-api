@@ -7,17 +7,6 @@ on:
     types:
       - published
 
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version'
-        required: true
-        default: 'Test Version'
-      app:
-        description: 'Application'
-        required: true
-        default: 'Test App'
-
 jobs:
   CI:
     runs-on: ubuntu-latest
