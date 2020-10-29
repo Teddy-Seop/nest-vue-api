@@ -1,6 +1,6 @@
 name: CI-CD-Pipeline
 env:
-  EB_ENVIRONMENT: "Notification-${{APP_NAME}}-Dev"
+  EB_ENVIRONMENT: "Notification-Dev"
 
 on:
   release:
@@ -32,4 +32,4 @@ jobs:
           echo "$APP_NAME"
           echo "$APP_NAME"
           echo "$APP_NAME"
-          echo "${{env.EB_ENVIRONMENT}}"
+          echo "${{env.EB_ENVIRONMENT}}-$APP_NAME"
