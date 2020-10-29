@@ -26,7 +26,7 @@ jobs:
 
       - name: Test echo  
         run: |
-          echo "APP_NAME=${{github.ref}}" | grep -E -i -w -o 'api|sms|email'
+          APP_NAME="$(echo ${{github.ref}}" | grep -E -i -w -o 'api|sms|email')"
           echo "$APP_NAME"
           echo "$APP_NAME"
           echo "$APP_NAME"
