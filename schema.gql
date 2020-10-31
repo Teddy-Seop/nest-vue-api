@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostsDto {
+  id: Int!
+  title: String!
+  contents: String!
+  user: UserDto!
+}
+
+type UserDto {
+  id: Int!
+  email: String!
+  password: String!
+  name: String!
+  posts: [PostsDto!]!
+}
+
+type Query {
+  getPost(postId: Int!): PostsDto!
+}
+
+type Mutation {
+  upsertPost(data: PostsInputDto!): PostsDto!
+}
+
+input PostsInputDto {
+  id: Int!
+  title: String!
+  contents: String!
+}

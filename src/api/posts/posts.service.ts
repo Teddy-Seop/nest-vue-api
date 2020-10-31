@@ -1,17 +1,15 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PostsEntity, UserEntity } from '@/models/entities/';
-import { listeners } from 'process';
+import { PostsEntity } from '@/models/entities/';
 import { IPostList } from '@/type/post';
+import { PostsDto } from './dto/posts.dto';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostsEntity)
     private readonly postsRepository: Repository<PostsEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   public async getPostList() {
@@ -44,8 +42,9 @@ export class PostsService {
     return post;
   }
 
-  public async addPost(post: PostsEntity) {
-    await this.postsRepository.save(post);
+  public async addPost(post: PostsDto) {
+    const result = await this.postsRepository.save(post);
+    return result;
   }
 
   public async deletePost(postId: number) {
