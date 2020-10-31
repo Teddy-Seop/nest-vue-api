@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Param, HttpException, HttpStatus, Body, UseGuards, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsEntity } from '@/models/entities';
-
 import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
 import { IPostList } from '@/type/post';
+import { PostsDto } from './dto/posts.dto';
 
 @Controller('/posts')
 export class PostsController {
@@ -57,9 +57,9 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Post('')
-  public async addPost(@Body() post: PostsEntity) {
+  public async addPost(@Body() data: PostsDto) {
     try {
-      await this.postsService.addPost(post);
+      await this.postsService.addPost(data);
     } catch (error) {
       throw new HttpException(`Can't insert post`, HttpStatus.METHOD_NOT_ALLOWED);
     }
