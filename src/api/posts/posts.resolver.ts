@@ -1,7 +1,10 @@
 import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from "@nestjs/graphql";
+import { BadRequestException } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsDto, PostsInputDto } from './dto';
 import { UserService } from '../user/user.service';
+import { IPostList } from '@/type/post';
+import { PostsEntity } from '../../models/entities/posts.entity';
 
 @Resolver(() => PostsDto)
 export class PostsResolver {
@@ -10,21 +13,54 @@ export class PostsResolver {
         private readonly userService: UserService
     ) { }
 
+    @Query(returns => [PostsDto])
+    async getPostList(): Promise<IPostList[]> {
+        try {
+            let postList: IPostList[];
+            postList = await this.postsService.getPostList();
+            return postList;
+        } catch {
+            throw new BadRequestException(`Can't get post list`);
+        }
+    }
+
     @Query(returns => PostsDto)
-    async getPost(@Args('postId', { type: () => Int }) postId: number) {
+    async getPost(@Args('postId', { type: () => Int }) postId: number): Promise<PostsEntity> {
         return this.postsService.getPost(postId);
     }
 
-    @ResolveField()
-    async user(@Parent() post: PostsDto) {
-        const { id } = post;
-        return this.userService.getUser(id);
+    @Query(returns => [PostsDto])
+    public async getMostLikes(): Promise<PostsEntity[]> {
+        try {
+            return await this.postsService.getMostLikes();
+        } catch {
+            throw new BadRequestException(`Can't get top likes post`);
+        }
     }
 
-    @Mutation(type => PostsInputDto)
-    async upsertPost(@Args({ name: 'id', type: () => PostsInputDto }) data: PostsInputDto) {
-        console.log('test')
-        console.log(data);
-        await this.postsService.addPost(data);
+    @Query(returns => [PostsDto])
+    public async getMostComments(): Promise<PostsEntity[]>{
+      try {
+        return await this.postsService.getMostComments();
+      } catch {
+        throw new BadRequestException(`Can't get top comments post`);
+      }
+    }
+
+    @Mutation(type => PostsDto)
+    async upsertPost(@Args({ name: 'data', type: () => PostsInputDto }) data: PostsInputDto): Promise<number> {
+        console.log(data)
+        return this.postsService.addPost(data);
+    }
+
+    @Mutation(type => PostsDto)
+    public async deletePost(@Args({ name: 'postId', type: () => Int }) postId: number) {
+        try {
+            await this.postsService.deletePost(postId);
+            return "OK";
+        } catch (error) {
+            console.log(error);
+            throw new BadRequestException(`Can't delete ${postId}`);
+        }
     }
 }

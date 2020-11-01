@@ -2,11 +2,31 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CommentsDto {
+  id: Int!
+  comment: String!
+  postsId: Int!
+  userId: Int!
+  user: UserDto!
+  posts: PostsDto!
+}
+
+type LikesDto {
+  id: Int!
+  postsId: Int!
+  userId: Int!
+  user: UserDto!
+  posts: PostsDto!
+}
+
 type PostsDto {
   id: Int!
   title: String!
   contents: String!
+  userId: Int!
   user: UserDto!
+  comments: CommentsDto!
+  likes: LikesDto!
 }
 
 type UserDto {
@@ -18,15 +38,20 @@ type UserDto {
 }
 
 type Query {
+  getPostList: [PostsDto!]!
   getPost(postId: Int!): PostsDto!
+  getMostLikes: [PostsDto!]!
+  getMostComments: [PostsDto!]!
 }
 
 type Mutation {
   upsertPost(data: PostsInputDto!): PostsDto!
+  deletePost(postId: Int!): PostsDto!
 }
 
 input PostsInputDto {
-  id: Int!
+  id: Int
   title: String!
   contents: String!
+  userId: Int!
 }
