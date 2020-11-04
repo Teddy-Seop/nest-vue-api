@@ -15,18 +15,34 @@ export class PostsDto {
     @Field()
     contents: string;
 
+    
     @Field(type => Int)
     userId: number;
-
+    
     @Field(type => UserDto)
     @IsOptional()
     user?: UserDto;
-
+    
     @Field(type => CommentsDto)
     @IsOptional()
     comments?: CommentsDto;
-
+    
     @Field(type => LikesDto)
     @IsOptional()
     likes?: LikesDto;
+    
+    @Field()
+    createdAt: Date;
+
+    @Field()
+    @IsOptional()
+    writer?: string;
+
+    @Field(type => Int)
+    @IsOptional()
+    commentCount?: number;
+
+    @Field(type => Int)
+    @IsOptional()
+    likeCount?: number;
 }
