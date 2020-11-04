@@ -18,6 +18,7 @@ export class PostsResolver {
         try {
             let postList: IPostList[];
             postList = await this.postsService.getPostList();
+            console.log(postList);
             return postList;
         } catch {
             throw new BadRequestException(`Can't get post list`);
