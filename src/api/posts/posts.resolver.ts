@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from "@nestjs/graphql";
 import { BadRequestException } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PostsDto, PostsInputDto } from './dto';
+import { PostsDto, PostListDto, PostsInputDto, PostListTestDto } from './dto';
 import { UserService } from '../user/user.service';
 import { IPostList } from '@/type/post';
 import { PostsEntity } from '../../models/entities/posts.entity';
@@ -10,15 +10,13 @@ import { PostsEntity } from '../../models/entities/posts.entity';
 export class PostsResolver {
     constructor(
         private readonly postsService: PostsService,
-        private readonly userService: UserService
     ) { }
 
-    @Query(returns => [PostsDto])
-    async getPostList(): Promise<IPostList[]> {
+    @Query(returns => PostListTestDto)
+    async getPostList(@Args('page', { type: () => Int }) page: number): Promise<PostListTestDto> {
         try {
-            let postList: IPostList[];
-            postList = await this.postsService.getPostList();
-            console.log(postList);
+            let postList: PostListTestDto;
+            postList = await this.postsService.getPostList(page);
             return postList;
         } catch {
             throw new BadRequestException(`Can't get post list`);
@@ -27,7 +25,11 @@ export class PostsResolver {
 
     @Query(returns => PostsDto)
     async getPost(@Args('postId', { type: () => Int }) postId: number): Promise<PostsEntity> {
-        return this.postsService.getPost(postId);
+        try {
+            return this.postsService.getPost(postId);
+        } catch (e) {
+            throw new BadRequestException(`Can't get post`);
+        }
     }
 
     @Query(returns => [PostsDto])
