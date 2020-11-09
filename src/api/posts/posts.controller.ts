@@ -9,17 +9,17 @@ import { PostsDto } from './dto/posts.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get('')
-  public async getPostList(): Promise<IPostList[]> {
-    let postList: IPostList[];
-    try {
-      postList = await this.postsService.getPostList();
-      return postList;
-    } catch {
-      throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED);
-    }
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get('')
+  // public async getPostList(): Promise<IPostList[]> {
+  //   let postList: IPostList[];
+  //   try {
+  //     postList = await this.postsService.getPostList();
+  //     return postList;
+  //   } catch {
+  //     throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED);
+  //   }
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get(':postId')

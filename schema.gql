@@ -23,9 +23,6 @@ type PostsDto {
   id: Int!
   title: String!
   contents: String!
-  writer: String!
-  commentCount: Int!
-  likeCount: Int!
   userId: Int!
   user: UserDto!
   comments: CommentsDto!
@@ -38,6 +35,25 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type PostListDto {
+  id: Int!
+  title: String!
+  contents: String!
+  userId: Int!
+  user: UserDto!
+  comments: CommentsDto!
+  likes: LikesDto!
+  createdAt: DateTime!
+  writer: String!
+  commentCount: Int!
+  likeCount: Int!
+}
+
+type PostListTestDto {
+  postList: [PostListDto!]!
+  totalCount: Int!
+}
+
 type UserDto {
   id: Int!
   email: String!
@@ -47,7 +63,7 @@ type UserDto {
 }
 
 type Query {
-  getPostList: [PostsDto!]!
+  getPostList(page: Int!): PostListTestDto!
   getPost(postId: Int!): PostsDto!
   getMostLikes: [PostsDto!]!
   getMostComments: [PostsDto!]!

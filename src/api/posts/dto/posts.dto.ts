@@ -14,10 +14,9 @@ export class PostsDto {
 
     @Field()
     contents: string;
-
     
     @Field(type => Int)
-    userId: number;
+    userId?: number;
     
     @Field(type => UserDto)
     @IsOptional()
@@ -33,7 +32,10 @@ export class PostsDto {
     
     @Field()
     createdAt: Date;
+}
 
+@ObjectType('PostListDto')
+export class PostListDto extends PostsDto {
     @Field()
     @IsOptional()
     writer?: string;
@@ -45,4 +47,13 @@ export class PostsDto {
     @Field(type => Int)
     @IsOptional()
     likeCount?: number;
+}
+
+@ObjectType('PostListTestDto')
+export class ListDto {
+    @Field(type => [PostListDto])
+    postList: PostListDto[];
+
+    @Field(type => Int)
+    totalCount: number;
 }

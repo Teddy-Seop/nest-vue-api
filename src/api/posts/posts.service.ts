@@ -2,8 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity } from '@/models/entities/';
-import { IPostList } from '@/type/post';
-import { PostsDto, PostsInputDto } from './dto';
+import { IPostList, IPost } from '@/type/post';
+import { PostsInputDto, ListDto } from './dto';
 
 @Injectable()
 export class PostsService {
@@ -12,13 +12,17 @@ export class PostsService {
     private readonly postsRepository: Repository<PostsEntity>,
   ) {}
 
-  public async getPostList() {
-    return this.postsRepository.find({
+  public async getPostList(page?: number): Promise<ListDto> {
+    const totalCount = await this.postsRepository.count();
+    
+    const postList = await this.postsRepository.find({
+      skip: (page - 1) * 30,
+      take: 30,
       relations: ['user', 'likes', 'comments'],
     })
     .then(postList => {
       if (!postList) { throw new HttpException(`Can't get post list`, HttpStatus.METHOD_NOT_ALLOWED); }
-      const return_value: IPostList[] = postList.map(post => {
+      const return_value: IPost[] = postList.map(post => {
         return {
           id: post.id,
           title: post.title,
@@ -32,6 +36,12 @@ export class PostsService {
 
       return return_value;
     })
+    const response: IPostList = {
+      postList: postList,
+      totalCount: totalCount,
+    }
+
+    return response;
   }
 
   public async getPost(postId: number): Promise<PostsEntity> {

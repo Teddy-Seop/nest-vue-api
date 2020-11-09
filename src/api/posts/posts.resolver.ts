@@ -1,24 +1,20 @@
 import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from "@nestjs/graphql";
 import { BadRequestException } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PostsDto, PostsInputDto } from './dto';
-import { UserService } from '../user/user.service';
-import { IPostList } from '@/type/post';
+import { PostsDto, ListDto, PostsInputDto } from './dto';
 import { PostsEntity } from '../../models/entities/posts.entity';
 
 @Resolver(() => PostsDto)
 export class PostsResolver {
     constructor(
         private readonly postsService: PostsService,
-        private readonly userService: UserService
     ) { }
 
-    @Query(returns => [PostsDto])
-    async getPostList(): Promise<IPostList[]> {
+    @Query(returns => ListDto)
+    async getPostList(@Args('page', { type: () => Int }) page: number): Promise<ListDto> {
         try {
-            let postList: IPostList[];
-            postList = await this.postsService.getPostList();
-            console.log(postList);
+            let postList: ListDto;
+            postList = await this.postsService.getPostList(page);
             return postList;
         } catch {
             throw new BadRequestException(`Can't get post list`);
@@ -27,7 +23,11 @@ export class PostsResolver {
 
     @Query(returns => PostsDto)
     async getPost(@Args('postId', { type: () => Int }) postId: number): Promise<PostsEntity> {
-        return this.postsService.getPost(postId);
+        try {
+            return this.postsService.getPost(postId);
+        } catch (e) {
+            throw new BadRequestException(`Can't get post`);
+        }
     }
 
     @Query(returns => [PostsDto])
