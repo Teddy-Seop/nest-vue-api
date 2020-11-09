@@ -1,9 +1,7 @@
 import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from "@nestjs/graphql";
 import { BadRequestException } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PostsDto, PostListDto, PostsInputDto, PostListTestDto } from './dto';
-import { UserService } from '../user/user.service';
-import { IPostList } from '@/type/post';
+import { PostsDto, ListDto, PostsInputDto } from './dto';
 import { PostsEntity } from '../../models/entities/posts.entity';
 
 @Resolver(() => PostsDto)
@@ -12,10 +10,10 @@ export class PostsResolver {
         private readonly postsService: PostsService,
     ) { }
 
-    @Query(returns => PostListTestDto)
-    async getPostList(@Args('page', { type: () => Int }) page: number): Promise<PostListTestDto> {
+    @Query(returns => ListDto)
+    async getPostList(@Args('page', { type: () => Int }) page: number): Promise<ListDto> {
         try {
-            let postList: PostListTestDto;
+            let postList: ListDto;
             postList = await this.postsService.getPostList(page);
             return postList;
         } catch {

@@ -50,7 +50,7 @@ export class PostListDto extends PostsDto {
 }
 
 @ObjectType('PostListTestDto')
-export class PostListTestDto {
+export class ListDto {
     @Field(type => [PostListDto])
     postList: PostListDto[];
 

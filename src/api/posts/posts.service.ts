@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity } from '@/models/entities/';
 import { IPostList, IPost } from '@/type/post';
-import { PostsDto, PostListDto, PostListTestDto, PostsInputDto } from './dto';
+import { PostsInputDto, ListDto } from './dto';
 
 @Injectable()
 export class PostsService {
@@ -12,7 +12,7 @@ export class PostsService {
     private readonly postsRepository: Repository<PostsEntity>,
   ) {}
 
-  public async getPostList(page?: number): Promise<PostListTestDto> {
+  public async getPostList(page?: number): Promise<ListDto> {
     const totalCount = await this.postsRepository.count();
     
     const postList = await this.postsRepository.find({
