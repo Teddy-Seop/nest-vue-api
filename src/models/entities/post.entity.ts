@@ -1,21 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { PostEntity } from './post.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+
+import { UserEntity } from './user.entity';
 import { CommentEntity } from './comment.entity';
 import { LikeEntity } from './like.entity';
 
-@Entity({ name: 'user' })
-export class UserEntity {
+@Entity({ name: 'post' })
+export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  email: string;
+  title: string;
 
   @Column()
-  password: string;
+  contents: string;
 
   @Column()
-  name: string;
+  userId: number;
 
   @Column({
     type: 'timestamp',
@@ -30,21 +37,23 @@ export class UserEntity {
   })
   updatedAt: Date;
 
-  @OneToMany(
-    type => PostEntity,
-    entity => entity.user,
+  @ManyToOne(
+    type => UserEntity,
+    entity => entity.posts,
   )
-  posts: PostEntity[];
+  user: UserEntity;
 
   @OneToMany(
     type => CommentEntity,
-    entity => entity.user,
+    entity => entity.post,
+    { cascade: true, nullable: true },
   )
   comments: CommentEntity[];
 
   @OneToMany(
     type => LikeEntity,
-    entity => entity.users,
+    entity => entity.post,
+    { cascade: true, nullable: true },
   )
   likes: LikeEntity[];
 }

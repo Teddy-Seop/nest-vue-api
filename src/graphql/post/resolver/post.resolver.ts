@@ -1,11 +1,12 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
-import { PostsService } from './posts.service';
-import { PostsDto, ListDto, PostsInputDto } from './dto';
-import { PostEntity } from '../../models/entities/post.entity';
+import { PostsDto } from '@/api/posts/dto/posts.dto';
+import { PostsService } from '@/api/posts';
+import { ListDto, PostsInputDto } from '@/api/posts/dto';
+import { PostEntity } from '@/models/entities';
 
 @Resolver(() => PostsDto)
-export class PostsResolver {
+export class PostResolver {
   constructor(private readonly postsService: PostsService) {}
 
   @Query(returns => ListDto)
