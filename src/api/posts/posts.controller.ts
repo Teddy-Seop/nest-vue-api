@@ -1,6 +1,16 @@
-import { Controller, Get, Post, Param, HttpException, HttpStatus, Body, UseGuards, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  HttpException,
+  HttpStatus,
+  Body,
+  UseGuards,
+  Delete,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PostsEntity } from '@/models/entities';
+import { PostEntity } from '@/models/entities';
 import { JwtAuthGuard } from '../../modules/auth/jwt.auth.guard';
 import { IPostList } from '@/type/post';
 import { PostsDto } from './dto/posts.dto';
@@ -23,9 +33,9 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':postId')
-  public async getPost(@Param('postId') postId: number): Promise<PostsEntity> {
+  public async getPost(@Param('postId') postId: number): Promise<PostEntity> {
     try {
-      const post: PostsEntity = await this.postsService.getPost(postId);
+      const post: PostEntity = await this.postsService.getPost(postId);
       return post;
     } catch (error) {
       throw new HttpException(
@@ -37,21 +47,27 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/top/likes')
-  public async getMostLikes(): Promise<PostsEntity[]> {
+  public async getMostLikes(): Promise<PostEntity[]> {
     try {
       return await this.postsService.getMostLikes();
     } catch {
-      throw new HttpException(`Can't get top likes post`, HttpStatus.METHOD_NOT_ALLOWED);
+      throw new HttpException(
+        'Can not get top likes post',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/top/comments')
-  public async getMostComments(): Promise<PostsEntity[]>{
+  public async getMostComments(): Promise<PostEntity[]> {
     try {
       return await this.postsService.getMostComments();
     } catch {
-      throw new HttpException(`Can't get top comments post`, HttpStatus.METHOD_NOT_ALLOWED);
+      throw new HttpException(
+        'Can not get top comments post',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
     }
   }
 
@@ -61,7 +77,10 @@ export class PostsController {
     try {
       await this.postsService.addPost(data);
     } catch (error) {
-      throw new HttpException(`Can't insert post`, HttpStatus.METHOD_NOT_ALLOWED);
+      throw new HttpException(
+        'Can not insert post',
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
     }
   }
 
@@ -71,10 +90,13 @@ export class PostsController {
     try {
       await this.postsService.deletePost(postId);
 
-      return "OK";
+      return 'OK';
     } catch (error) {
       console.log(error);
-      throw new HttpException(`Can't delete ${postId}`, HttpStatus.METHOD_NOT_ALLOWED)
+      throw new HttpException(
+        `Can't delete ${postId}`,
+        HttpStatus.METHOD_NOT_ALLOWED,
+      );
     }
   }
 }

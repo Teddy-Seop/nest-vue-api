@@ -1,37 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CommentsEntity } from '@/models/entities/';
+import { CommentEntity } from '@/models/entities/';
 
 @Injectable()
 export class CommentsService {
+  constructor(
+    @InjectRepository(CommentEntity)
+    private readonly commentsRepository: Repository<CommentEntity>,
+  ) {}
 
-    constructor(@InjectRepository(CommentsEntity) private readonly commentsRepository: Repository<CommentsEntity>) {}
+  public async getComment(commentId: number): Promise<CommentEntity> {
+    const comment = await this.commentsRepository.findOneOrFail({
+      where: { id: commentId },
+    });
+    return comment;
+  }
 
-    public async getComment(commentId: number): Promise<CommentsEntity> {
-        const comment = await this.commentsRepository.findOneOrFail({
-            where: { id: commentId },
-        });
-        return comment;
-    }
+  public async getCommentsList(postsId: number): Promise<CommentEntity[]> {
+    const commentsList: CommentEntity[] = await this.commentsRepository.find({
+      where: { postsId: postsId },
+      relations: ['user'],
+    });
+    return commentsList;
+  }
 
-    public async getCommentsList(postsId: number): Promise<CommentsEntity[]> {
-        const commentsList: CommentsEntity[] = await this.commentsRepository.find({
-            where: { postsId: postsId },
-            relations: ['user']
-        });
-        return commentsList;
-    }
+  public async writeComment(comment: CommentEntity) {
+    await this.commentsRepository.save(comment);
+  }
 
-    public async writeComment(comment: CommentsEntity) {
-        await this.commentsRepository.save(comment);
-    }
-
-    public async deleteComment(id: number) {
-        await this.commentsRepository
-        .createQueryBuilder('comments')
-        .delete()
-        .where("id = :id", { id })
-        .execute();
-    }
+  public async deleteComment(id: number) {
+    await this.commentsRepository
+      .createQueryBuilder('comments')
+      .delete()
+      .where('id = :id', { id })
+      .execute();
+  }
 }

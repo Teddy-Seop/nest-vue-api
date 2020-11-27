@@ -1,4 +1,4 @@
 export { UserEntity } from './user.entity';
-export { PostsEntity } from './posts.entity';
-export { CommentsEntity } from './comments.entity';
-export { LikesEntity } from './likes.entity';
+export { PostEntity } from './post.entity';
+export { CommentEntity } from './comment.entity';
+export { LikeEntity } from './like.entity';
