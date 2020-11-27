@@ -49,11 +49,6 @@ type PostListDto {
   likeCount: Int!
 }
 
-type PostListTestDto {
-  postList: [PostListDto!]!
-  totalCount: Int!
-}
-
 type UserDto {
   id: Int!
   email: String!
@@ -62,21 +57,13 @@ type UserDto {
   posts: [PostsDto!]!
 }
 
-type Query {
-  getPostList(page: Int!): PostListTestDto!
-  getPost(postId: Int!): PostsDto!
-  getMostLikes: [PostsDto!]!
-  getMostComments: [PostsDto!]!
-}
-
-type Mutation {
-  upsertPost(data: PostsInputDto!): PostsDto!
-  deletePost(postId: Int!): PostsDto!
-}
-
-input PostsInputDto {
-  id: Int
+type PostObjectType {
+  id: Int!
   title: String!
   contents: String!
-  userId: Int!
+}
+
+type Query {
+  getPost(postId: Int!): PostObjectType!
+  getPostList(page: Int!): [PostObjectType!]!
 }

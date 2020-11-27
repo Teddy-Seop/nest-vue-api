@@ -1,73 +1,74 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
-import { PostsDto } from '@/api/posts/dto/posts.dto';
-import { PostsService } from '@/api/posts';
-import { ListDto, PostsInputDto } from '@/api/posts/dto';
-import { PostEntity } from '@/models/entities';
+import { PostService } from '../service/post.service';
+import { PostObjectType } from '../type/post.object.type';
 
-@Resolver(() => PostsDto)
+@Resolver()
 export class PostResolver {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postService: PostService) {}
 
-  @Query(returns => ListDto)
+  @Query(returns => PostObjectType)
+  async getPost(
+    @Args('postId', { type: () => Int }) postId: number,
+  ): Promise<PostObjectType> {
+    try {
+      return this.postService.getPost(postId);
+    } catch (e) {
+      throw new BadRequestException('Can not get post');
+    }
+  }
+
+  @Query(returns => [PostObjectType])
   async getPostList(
     @Args('page', { type: () => Int }) page: number,
-  ): Promise<ListDto> {
+  ): Promise<PostObjectType[]> {
     try {
-      const postList: ListDto = await this.postsService.getPostList(page);
+      const postList: PostObjectType[] = await this.postService.getPostList(
+        page,
+      );
+
       return postList;
     } catch {
       throw new BadRequestException('Can not get post list');
     }
   }
 
-  @Query(returns => PostsDto)
-  async getPost(
-    @Args('postId', { type: () => Int }) postId: number,
-  ): Promise<PostEntity> {
-    try {
-      return this.postsService.getPost(postId);
-    } catch (e) {
-      throw new BadRequestException('Can not get post');
-    }
-  }
+  //   @Query(returns => [PostsDto])
+  //   public async getMostLikes(): Promise<PostEntity[]> {
+  //     try {
+  //       return await this.postsService.getMostLikes();
+  //     } catch {
+  //       throw new BadRequestException('Can not get top likes post');
+  //     }
+  //   }
 
-  @Query(returns => [PostsDto])
-  public async getMostLikes(): Promise<PostEntity[]> {
-    try {
-      return await this.postsService.getMostLikes();
-    } catch {
-      throw new BadRequestException('Can not get top likes post');
-    }
-  }
+  //   @Query(returns => [PostsDto])
+  //   public async getMostComments(): Promise<PostEntity[]> {
+  //     try {
+  //       return await this.postsService.getMostComments();
+  //     } catch {
+  //       throw new BadRequestException('Can not get top comments post');
+  //     }
+  //   }
 
-  @Query(returns => [PostsDto])
-  public async getMostComments(): Promise<PostEntity[]> {
-    try {
-      return await this.postsService.getMostComments();
-    } catch {
-      throw new BadRequestException('Can not get top comments post');
-    }
-  }
+  //   @Mutation(type => PostsDto)
+  //   async upsertPost(
+  //     @Args({ name: 'data', type: () => PostsInputDto }) data: PostsInputDto,
+  //   ): Promise<number> {
+  //     console.log(data);
+  //     return this.postsService.addPost(data);
+  //   }
 
-  @Mutation(type => PostsDto)
-  async upsertPost(
-    @Args({ name: 'data', type: () => PostsInputDto }) data: PostsInputDto,
-  ): Promise<number> {
-    console.log(data);
-    return this.postsService.addPost(data);
-  }
-
-  @Mutation(type => PostsDto)
-  public async deletePost(
-    @Args({ name: 'postId', type: () => Int }) postId: number,
-  ) {
-    try {
-      await this.postsService.deletePost(postId);
-      return 'OK';
-    } catch (error) {
-      console.log(error);
-      throw new BadRequestException(`Can't delete ${postId}`);
-    }
-  }
+  //   @Mutation(type => PostsDto)
+  //   public async deletePost(
+  //     @Args({ name: 'postId', type: () => Int }) postId: number,
+  //   ) {
+  //     try {
+  //       await this.postsService.deletePost(postId);
+  //       return 'OK';
+  //     } catch (error) {
+  //       console.log(error);
+  //       throw new BadRequestException(`Can't delete ${postId}`);
+  //     }
+  //   }
 }

@@ -5,10 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { DatabaseModule } from './models';
 import { AuthModule } from './modules/auth/auth.module';
 
-import { UserModule } from './api/user';
-import { PostsModule } from './api/posts';
-import { CommentsModule } from './api/comments';
-import { LikesModule } from './api/likes/likes.module';
+import { PostModule } from './graphql/post/post.module';
 
 @Module({
   imports: [
@@ -22,11 +19,8 @@ import { LikesModule } from './api/likes/likes.module';
       autoSchemaFile: 'schema.gql',
     }),
 
-    // Controller Modules
-    UserModule,
-    PostsModule,
-    CommentsModule,
-    LikesModule,
+    // GraphQL Modules
+    PostModule,
   ],
   exports: [],
   controllers: [],
