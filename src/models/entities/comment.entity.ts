@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { UserEntity } from '.';
 import { PostEntity } from '@/models/entities';
@@ -17,18 +25,21 @@ export class CommentEntity {
   @Column()
   userId: number;
 
-  @Column({
+  @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
-    onUpdate: 'NOW()',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 
   @ManyToOne(
     type => UserEntity,

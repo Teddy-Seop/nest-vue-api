@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { PostEntity } from './post.entity';
 import { CommentEntity } from './comment.entity';
 import { LikeEntity } from './like.entity';
@@ -17,18 +25,21 @@ export class UserEntity {
   @Column()
   name: string;
 
-  @Column({
+  @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
-    onUpdate: 'NOW()',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 
   @OneToMany(
     type => PostEntity,
