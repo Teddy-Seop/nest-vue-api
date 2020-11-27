@@ -8,7 +8,7 @@ export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   @Query(returns => PostObjectType)
-  async getPost(
+  async post(
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<PostObjectType> {
     try {

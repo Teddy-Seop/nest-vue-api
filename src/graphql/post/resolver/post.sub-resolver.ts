@@ -1,10 +1,18 @@
 import { PostObjectType } from '../type/post.object.type';
-import { PostService } from '../service/post.service';
-import { Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { UserObjectType } from '@/graphql/user/type/user.object-type';
+import { UserService } from '../../user/service/user.service';
 
 @Resolver(of => PostObjectType)
 export class PostSubResolver {
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly userService: UserService) {}
 
-  public getUser;
+  @ResolveField(returns => UserObjectType)
+  public async writer(@Parent() post: PostObjectType): Promise<UserObjectType> {
+    const user: UserObjectType = await this.userService.getUserById(
+      post.userId,
+    );
+
+    return user;
+  }
 }

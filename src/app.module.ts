@@ -3,9 +3,9 @@ import { SessionModule } from 'nestjs-session';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { DatabaseModule } from './models';
-import { AuthModule } from './modules/auth/auth.module';
 
 import { PostModule } from './graphql/post/post.module';
+import { UserModule } from './graphql/user/user.module';
 
 @Module({
   imports: [
@@ -14,13 +14,13 @@ import { PostModule } from './graphql/post/post.module';
     SessionModule.forRoot({
       session: { secret: 'keyboard cat' },
     }),
-    AuthModule,
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
     }),
 
     // GraphQL Modules
     PostModule,
+    UserModule,
   ],
   exports: [],
   controllers: [],
