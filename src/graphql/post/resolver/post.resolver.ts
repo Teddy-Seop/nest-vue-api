@@ -59,22 +59,4 @@ export class PostResolver {
       throw new BadRequestException('Can not delete post');
     }
   }
-
-  //   @Query(returns => [PostsDto])
-  //   public async getMostLikes(): Promise<PostEntity[]> {
-  //     try {
-  //       return await this.postsService.getMostLikes();
-  //     } catch {
-  //       throw new BadRequestException('Can not get top likes post');
-  //     }
-  //   }
-
-  //   @Query(returns => [PostsDto])
-  //   public async getMostComments(): Promise<PostEntity[]> {
-  //     try {
-  //       return await this.postsService.getMostComments();
-  //     } catch {
-  //       throw new BadRequestException('Can not get top comments post');
-  //     }
-  //   }
 }
