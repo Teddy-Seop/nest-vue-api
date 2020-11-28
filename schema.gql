@@ -24,19 +24,36 @@ type PostObjectType {
   writer: UserObjectType!
 }
 
+type CommentObjectType {
+  id: Int!
+  comment: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   post(postId: Int!): PostObjectType!
-  getPostList(page: Int!): [PostObjectType!]!
+  postList(page: Int!): [PostObjectType!]!
+  commentList(postId: Int!): [CommentObjectType!]!
 }
 
 type Mutation {
   savePost(post: PostInputType!): Boolean!
   deletePost(postId: Int!): Boolean!
+  saveComment(comment: CommentInputType!): Boolean!
+  deleteComment(commentId: Int!): Boolean!
 }
 
 input PostInputType {
   id: Int
   title: String!
   contents: String!
+  userId: Int!
+}
+
+input CommentInputType {
+  id: Int
+  comment: String!
+  postId: Int!
   userId: Int!
 }

@@ -20,7 +20,7 @@ export class PostResolver {
   }
 
   @Query(returns => [PostObjectType])
-  async getPostList(
+  async postList(
     @Args('page', { type: () => Int }) page: number,
   ): Promise<PostObjectType[]> {
     try {

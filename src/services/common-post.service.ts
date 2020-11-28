@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PostEntity } from '../models/entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IPaginationOption, IInputPost } from '@/type/post';
+import { IPaginationOption, IPostInput } from '@/type/post.type';
 
 @Injectable()
 export class CommonPostService {
@@ -33,7 +33,7 @@ export class CommonPostService {
     return postList;
   }
 
-  public async savePost(post: IInputPost): Promise<boolean> {
+  public async savePost(post: IPostInput): Promise<boolean> {
     await this.postRepository.save(post);
 
     return true;

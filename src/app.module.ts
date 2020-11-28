@@ -6,6 +6,7 @@ import { DatabaseModule } from './models';
 
 import { PostModule } from './graphql/post/post.module';
 import { UserModule } from './graphql/user/user.module';
+import { CommentModule } from './graphql/comment/comment.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './graphql/user/user.module';
     // GraphQL Modules
     PostModule,
     UserModule,
+    CommentModule,
   ],
   exports: [],
   controllers: [],
