@@ -2,6 +2,7 @@ import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
 import { PostService } from '../service/post.service';
 import { PostObjectType } from '../type/post.object.type';
+import { PostInputType } from '../type/post.input-type';
 
 @Resolver()
 export class PostResolver {
@@ -33,6 +34,32 @@ export class PostResolver {
     }
   }
 
+  @Mutation(returns => Boolean)
+  public async savePost(
+    @Args('post', { type: () => PostInputType }) post: PostInputType,
+  ): Promise<boolean> {
+    try {
+      const result = await this.postService.savePost(post);
+
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Can not save post');
+    }
+  }
+
+  @Mutation(returns => Boolean)
+  public async deletePost(
+    @Args('postId', { type: () => Int }) postId: number,
+  ): Promise<boolean> {
+    try {
+      const result = await this.postService.deletePost(postId);
+
+      return result;
+    } catch (error) {
+      throw new BadRequestException('Can not delete post');
+    }
+  }
+
   //   @Query(returns => [PostsDto])
   //   public async getMostLikes(): Promise<PostEntity[]> {
   //     try {
@@ -48,27 +75,6 @@ export class PostResolver {
   //       return await this.postsService.getMostComments();
   //     } catch {
   //       throw new BadRequestException('Can not get top comments post');
-  //     }
-  //   }
-
-  //   @Mutation(type => PostsDto)
-  //   async upsertPost(
-  //     @Args({ name: 'data', type: () => PostsInputDto }) data: PostsInputDto,
-  //   ): Promise<number> {
-  //     console.log(data);
-  //     return this.postsService.addPost(data);
-  //   }
-
-  //   @Mutation(type => PostsDto)
-  //   public async deletePost(
-  //     @Args({ name: 'postId', type: () => Int }) postId: number,
-  //   ) {
-  //     try {
-  //       await this.postsService.deletePost(postId);
-  //       return 'OK';
-  //     } catch (error) {
-  //       console.log(error);
-  //       throw new BadRequestException(`Can't delete ${postId}`);
   //     }
   //   }
 }

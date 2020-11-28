@@ -28,3 +28,15 @@ type Query {
   post(postId: Int!): PostObjectType!
   getPostList(page: Int!): [PostObjectType!]!
 }
+
+type Mutation {
+  savePost(post: PostInputType!): Boolean!
+  deletePost(postId: Int!): Boolean!
+}
+
+input PostInputType {
+  id: Int
+  title: String!
+  contents: String!
+  userId: Int!
+}

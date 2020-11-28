@@ -13,6 +13,13 @@ export interface IPostList {
   totalCount: number;
 }
 
+export interface IInputPost {
+  id?: number;
+  title: string;
+  contents: string;
+  userId: number;
+}
+
 export interface IPaginationOption {
   skip: number;
   take: number;

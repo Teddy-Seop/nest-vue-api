@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommonPostService } from '@/services/common-post.service';
 import { PostObjectType } from '../type/post.object.type';
+import { PostInputType } from '../type/post.input-type';
 
 @Injectable()
 export class PostService {
@@ -24,5 +25,17 @@ export class PostService {
     );
 
     return postList;
+  }
+
+  public async savePost(post: PostInputType): Promise<boolean> {
+    const result = await this.commonPostService.savePost(post);
+
+    return result;
+  }
+
+  public async deletePost(postId: number): Promise<boolean> {
+    const result = await this.commonPostService.deletePost(postId);
+
+    return result;
   }
 }
