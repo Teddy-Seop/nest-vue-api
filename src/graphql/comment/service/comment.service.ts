@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CommonCommentService } from '../../../services/common-comment.service';
-import { CommentObjectType } from '../type/comment.object-type';
+import {
+  CommentObjectType,
+  CommentCountObjectType,
+} from '../type/comment.object-type';
 import { CommentInputType } from '../type/comment.input-type';
 
 @Injectable()
@@ -13,6 +16,12 @@ export class CommentService {
     );
 
     return commentList;
+  }
+
+  public async getCommentCount(): Promise<CommentCountObjectType[]> {
+    const result: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
+
+    return result;
   }
 
   public async saveComment(comment: CommentInputType): Promise<boolean> {

@@ -1,7 +1,10 @@
 import { BadRequestException } from '@nestjs/common';
 import { Args, Int, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { CommentService } from '../service/comment.service';
-import { CommentObjectType } from '../type/comment.object-type';
+import {
+  CommentObjectType,
+  CommentCountObjectType,
+} from '../type/comment.object-type';
 import { CommentInputType } from '../type/comment.input-type';
 
 @Resolver()
@@ -16,6 +19,17 @@ export class CommentResolver {
       const commentList = await this.commentService.getCommentList(postId);
 
       return commentList;
+    } catch (error) {
+      new BadRequestException('Can not get comment list');
+    }
+  }
+
+  @Query(returns => [CommentCountObjectType])
+  public async topComment(): Promise<CommentCountObjectType[]> {
+    try {
+      const result: CommentCountObjectType[] = await this.commentService.getCommentCount();
+
+      return result;
     } catch (error) {
       new BadRequestException('Can not get comment list');
     }

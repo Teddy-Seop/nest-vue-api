@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICommentInput } from '@/type/comment.type';
+import { ICommentCount } from '@/type/comment.type';
 
 @Injectable()
 export class CommonCommentService {
@@ -31,6 +32,17 @@ export class CommonCommentService {
     });
 
     return comments;
+  }
+
+  public async getCommentCount(): Promise<ICommentCount[]> {
+    const result: ICommentCount[] = await this.commentRepository
+      .createQueryBuilder('comment')
+      .select('comment.postId AS postId')
+      .addSelect('COUNT(*) AS commentCount')
+      .groupBy('comment.postId')
+      .getRawMany();
+
+    return result;
   }
 
   public async saveComment(comment: ICommentInput): Promise<boolean> {
