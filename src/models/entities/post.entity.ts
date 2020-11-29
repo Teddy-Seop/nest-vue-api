@@ -4,6 +4,9 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
@@ -24,18 +27,21 @@ export class PostEntity {
   @Column()
   userId: number;
 
-  @Column({
+  @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamp',
-    default: () => 'NOW()',
-    onUpdate: 'NOW()',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 
   @ManyToOne(
     type => UserEntity,
