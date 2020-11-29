@@ -55,7 +55,7 @@ export class UserEntity {
 
   @OneToMany(
     type => LikeEntity,
-    entity => entity.users,
+    entity => entity.user,
   )
   likes: LikeEntity[];
 }

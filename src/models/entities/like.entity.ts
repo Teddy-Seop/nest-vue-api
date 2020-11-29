@@ -47,5 +47,5 @@ export class LikeEntity {
     type => UserEntity,
     entity => entity.likes,
   )
-  users: UserEntity[];
+  user: UserEntity[];
 }
