@@ -19,3 +19,14 @@ export class UserInputType {
   @Field(type => String)
   public name: string;
 }
+
+@InputType()
+export class UserLoginInputType {
+  @IsString()
+  @Field(type => String)
+  public email: string;
+
+  @IsString()
+  @Field(type => String)
+  public password: string;
+}

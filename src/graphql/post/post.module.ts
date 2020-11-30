@@ -6,9 +6,15 @@ import { PostSubResolver } from './resolver/post.sub-resolver';
 import { UserModule } from '../user/user.module';
 import { CommentModule } from '../comment/comment.module';
 import { LikeModule } from '../like/like.module';
+import { AuthModule } from '../../modules/auth/auth.module';
 
 @Module({
-  imports: [UserModule, forwardRef(() => CommentModule), LikeModule],
+  imports: [
+    UserModule,
+    forwardRef(() => CommentModule),
+    LikeModule,
+    AuthModule,
+  ],
   providers: [PostService, CommonPostService, PostResolver, PostSubResolver],
   exports: [PostService],
 })

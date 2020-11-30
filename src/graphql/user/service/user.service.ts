@@ -13,4 +13,16 @@ export class UserService {
 
     return user;
   }
+
+  public async getUser(
+    email: string,
+    password: string,
+  ): Promise<UserObjectType> {
+    const user: UserObjectType = await this.commonUserService.getUser(
+      email,
+      password,
+    );
+
+    return user;
+  }
 }

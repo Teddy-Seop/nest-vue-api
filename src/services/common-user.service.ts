@@ -15,4 +15,16 @@ export class CommonUserService {
 
     return user;
   }
+
+  public async getUser(email: string, password: string): Promise<UserEntity> {
+    const user: UserEntity = await this.userRepository.findOne({
+      where: {
+        email,
+        password,
+        deletedAt: null,
+      },
+    });
+
+    return user;
+  }
 }

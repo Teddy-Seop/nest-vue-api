@@ -20,3 +20,9 @@ export class UserObjectType {
   @Field(type => Date)
   public updatedAt: Date;
 }
+
+@ObjectType()
+export class AccessTokenObjectType {
+  @Field(type => String)
+  access_token: string;
+}

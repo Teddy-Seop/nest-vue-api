@@ -7,6 +7,7 @@ import { BadRequestException } from '@nestjs/common';
 @Resolver(of => CommentCountObjectType)
 export class CommentSubResolver {
   constructor(private readonly postService: PostService) {}
+
   @ResolveField(returns => PostObjectType)
   public async post(
     @Parent() commentCount: CommentCountObjectType,

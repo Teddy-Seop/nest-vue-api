@@ -1,14 +1,16 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { PostService } from '../service/post.service';
 import { PostObjectType } from '../type/post.object.type';
 import { PostInputType } from '../type/post.input-type';
+import { LocalAuthGuard } from '@/modules/auth/local-auth.guard';
 
 @Resolver()
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   @Query(returns => PostObjectType)
+  @UseGuards(LocalAuthGuard)
   async post(
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<PostObjectType> {
