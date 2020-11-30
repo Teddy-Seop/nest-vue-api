@@ -2,10 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CommonPostService } from '@/services/common-post.service';
 import { PostObjectType } from '../type/post.object.type';
 import { PostInputType } from '../type/post.input-type';
+import { CommentService } from '@/graphql/comment/service/comment.service';
+import { LikeService } from '@/graphql/like/service/like.service';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly commonPostService: CommonPostService) {}
+  constructor(
+    private readonly commonPostService: CommonPostService,
+    private readonly commentService: CommentService,
+    private readonly likeService: LikeService,
+  ) {}
 
   public async getPost(postId: number): Promise<PostObjectType> {
     const post: PostObjectType = await this.commonPostService.getPostById(
@@ -33,9 +40,12 @@ export class PostService {
     return result;
   }
 
+  @Transactional()
   public async deletePost(postId: number): Promise<boolean> {
-    const result = await this.commonPostService.deletePost(postId);
+    await this.commonPostService.deletePost(postId);
+    await this.commentService.deleteCommentByPostId(postId);
+    await this.likeService.deleteLike(postId);
 
-    return result;
+    return true;
   }
 }

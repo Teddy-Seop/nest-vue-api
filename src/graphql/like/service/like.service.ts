@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommonLikeService } from '@/services/common-like.service';
+import { LikeInputType } from '../type/like.input-type';
 
 @Injectable()
 export class LikeService {
@@ -27,8 +28,16 @@ export class LikeService {
     return result;
   }
 
-  public async deleteLike(postId: number, userId: number): Promise<boolean> {
-    const result = await this.commonLikeService.deleteLike(postId, userId);
+  public async deleteLike(postId: number, userId?: number): Promise<boolean> {
+    const deleteOption: LikeInputType = {
+      postId,
+    };
+
+    if (userId) {
+      deleteOption.userId = userId;
+    }
+
+    const result = await this.commonLikeService.deleteLike(deleteOption);
 
     return result;
   }

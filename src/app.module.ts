@@ -12,7 +12,7 @@ import { LikeModule } from './graphql/like/like.module';
 @Module({
   imports: [
     // Global Modules
-    DatabaseModule,
+    DatabaseModule.forRoot(),
     SessionModule.forRoot({
       session: { secret: 'keyboard cat' },
     }),

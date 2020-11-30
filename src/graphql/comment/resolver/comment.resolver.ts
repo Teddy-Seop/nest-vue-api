@@ -64,7 +64,7 @@ export class CommentResolver {
     @Args('commentId', { type: () => Int }) commentId: number,
   ): Promise<boolean> {
     try {
-      const result = await this.commentService.deleteComment(commentId);
+      const result = await this.commentService.deleteCommentById(commentId);
 
       return result;
     } catch (error) {

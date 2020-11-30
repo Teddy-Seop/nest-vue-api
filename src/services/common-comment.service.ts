@@ -51,8 +51,16 @@ export class CommonCommentService {
     return true;
   }
 
-  public async deleteComment(commentId: number): Promise<boolean> {
+  public async deleteCommentById(commentId: number): Promise<boolean> {
     await this.commentRepository.softDelete(commentId);
+
+    return true;
+  }
+
+  public async deleteCommentByPostId(postId: number): Promise<boolean> {
+    await this.commentRepository.softDelete({
+      postId,
+    });
 
     return true;
   }

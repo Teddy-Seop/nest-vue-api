@@ -34,6 +34,7 @@ type CommentObjectType {
 type CommentCountObjectType {
   postId: Int!
   commentCount: Int!
+  post: PostObjectType
 }
 
 type Query {

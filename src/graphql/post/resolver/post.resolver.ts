@@ -56,6 +56,7 @@ export class PostResolver {
 
       return result;
     } catch (error) {
+      console.log(error);
       throw new BadRequestException('Can not delete post');
     }
   }

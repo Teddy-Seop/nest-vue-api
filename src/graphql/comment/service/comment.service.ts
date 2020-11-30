@@ -30,8 +30,16 @@ export class CommentService {
     return result;
   }
 
-  public async deleteComment(commentId: number): Promise<boolean> {
-    const result = await this.commonCommentService.deleteComment(commentId);
+  public async deleteCommentById(commentId: number): Promise<boolean> {
+    const result = await this.commonCommentService.deleteCommentById(commentId);
+
+    return result;
+  }
+
+  public async deleteCommentByPostId(postId: number): Promise<boolean> {
+    const result = await this.commonCommentService.deleteCommentByPostId(
+      postId,
+    );
 
     return result;
   }

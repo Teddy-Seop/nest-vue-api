@@ -2,6 +2,7 @@ import { LikeEntity } from '@/models/entities';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ILikeInput } from '@/type/like.type';
 
 @Injectable()
 export class CommonLikeService {
@@ -42,11 +43,8 @@ export class CommonLikeService {
     return true;
   }
 
-  public async deleteLike(postId: number, userId: number): Promise<boolean> {
-    await this.likeRepository.softDelete({
-      postId,
-      userId,
-    });
+  public async deleteLike(deleteOption: ILikeInput): Promise<boolean> {
+    await this.likeRepository.softDelete(deleteOption);
 
     return true;
   }
