@@ -7,6 +7,9 @@ import { UserModule } from '../user/user.module';
 import { CommentModule } from '../comment/comment.module';
 import { LikeModule } from '../like/like.module';
 import { AuthModule } from '../../modules/auth/auth.module';
+import { CommentLoader } from './loader/comment.loader';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DataLoaderInterceptor } from 'nestjs-dataloader';
 
 @Module({
   imports: [
@@ -15,7 +18,19 @@ import { AuthModule } from '../../modules/auth/auth.module';
     LikeModule,
     AuthModule,
   ],
-  providers: [PostService, CommonPostService, PostResolver, PostSubResolver],
+  providers: [
+    PostService,
+    CommonPostService,
+    PostResolver,
+    PostSubResolver,
+
+    // Dataloaders
+    CommentLoader,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataLoaderInterceptor,
+    },
+  ],
   exports: [PostService],
 })
 export class PostModule {}

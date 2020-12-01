@@ -31,8 +31,8 @@ export class PostResolver {
       );
 
       return postList;
-    } catch {
-      throw new BadRequestException('Can not get post list');
+    } catch (error) {
+      throw new error();
     }
   }
 

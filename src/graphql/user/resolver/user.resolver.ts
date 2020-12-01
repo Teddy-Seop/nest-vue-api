@@ -6,7 +6,6 @@ import {
 } from '../type/user.object-type';
 import { UserLoginInputType } from '../type/user.input-type';
 import { AuthService } from '../../../modules/auth/auth.service';
-import { Any } from 'typeorm';
 
 @Resolver()
 export class UserResolver {

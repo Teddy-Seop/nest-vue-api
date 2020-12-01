@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICommentInput } from '@/type/comment.type';
 import { ICommentCount } from '@/type/comment.type';
+import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
 
 @Injectable()
 export class CommonCommentService {
@@ -38,7 +39,7 @@ export class CommonCommentService {
     const result: ICommentCount[] = await this.commentRepository
       .createQueryBuilder('comment')
       .select('comment.postId AS postId')
-      .addSelect('COUNT(*) AS commentCount')
+      .addSelect('CAST(COUNT(*) AS unsigned) AS commentCount')
       .groupBy('comment.postId')
       .getRawMany();
 

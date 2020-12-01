@@ -14,4 +14,7 @@ export class PostObjectType {
 
   @Field(type => Int)
   public userId: number;
+
+  @Field(type => Date)
+  public createdAt: Date;
 }

@@ -1,11 +1,11 @@
-import { forwardRef, Global, Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserModule } from '../../graphql/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
-import { LocalAuthGuard } from './local-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '30m' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, LocalAuthGuard],
+  providers: [AuthService, LocalStrategy, JwtAuthGuard],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -25,7 +25,9 @@ type PostObjectType {
   title: String!
   contents: String!
   userId: Int!
+  createdAt: DateTime!
   writer: UserObjectType!
+  commentCount: CommentCountObjectType!
 }
 
 type CommentObjectType {
