@@ -11,7 +11,9 @@ export class CommentLoader
 
   generateDataLoader(): DataLoader<number, CommentCountObjectType> {
     return new DataLoader<number, CommentCountObjectType>(async keys => {
-      const commentCountList: CommentCountObjectType[] = await this.commentService.getCommentCount();
+      const commentCountList: CommentCountObjectType[] = await this.commentService.getCommentCount(
+        <number[]>keys,
+      );
 
       const result = keys.map(key => {
         const commentCount = commentCountList.filter(

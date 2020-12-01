@@ -28,6 +28,7 @@ type PostObjectType {
   createdAt: DateTime!
   writer: UserObjectType!
   commentCount: CommentCountObjectType!
+  likeCount: LikeCountObjectType!
 }
 
 type CommentObjectType {
@@ -41,6 +42,11 @@ type CommentCountObjectType {
   postId: Int!
   commentCount: Int!
   post: PostObjectType
+}
+
+type LikeCountObjectType {
+  postId: Int!
+  likeCount: Int!
 }
 
 type Query {

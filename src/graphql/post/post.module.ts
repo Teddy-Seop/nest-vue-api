@@ -10,6 +10,7 @@ import { AuthModule } from '../../modules/auth/auth.module';
 import { CommentLoader } from './loader/comment.loader';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DataLoaderInterceptor } from 'nestjs-dataloader';
+import { LikeLoader } from './loader/like.loader';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DataLoaderInterceptor } from 'nestjs-dataloader';
 
     // Dataloaders
     CommentLoader,
+    LikeLoader,
     {
       provide: APP_INTERCEPTOR,
       useClass: DataLoaderInterceptor,

@@ -18,8 +18,12 @@ export class CommentService {
     return commentList;
   }
 
-  public async getCommentCount(): Promise<CommentCountObjectType[]> {
-    const result: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
+  public async getCommentCount(
+    postIds?: number[],
+  ): Promise<CommentCountObjectType[]> {
+    const result: CommentCountObjectType[] = await this.commonCommentService.getCommentCount(
+      postIds,
+    );
 
     return result;
   }
