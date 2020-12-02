@@ -36,11 +36,15 @@ export class CommonCommentService {
   }
 
   public async getCommentCount(postIds?: number[]): Promise<ICommentCount[]> {
-    const result: ICommentCount[] = await this.commentRepository
-      .createQueryBuilder('comment')
+    const queryBuilder = this.commentRepository.createQueryBuilder('comment');
+
+    if (postIds) {
+      queryBuilder.where('comment.postId IN (:ids)', { ids: postIds });
+    }
+
+    const result: ICommentCount[] = await queryBuilder
       .select('comment.postId AS postId')
       .addSelect('CAST(COUNT(*) AS unsigned) AS commentCount')
-      .where('comment.postId IN (:ids)', { ids: postIds })
       .groupBy('comment.postId')
       .getRawMany();
 

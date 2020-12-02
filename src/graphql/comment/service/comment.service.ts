@@ -19,12 +19,28 @@ export class CommentService {
   }
 
   public async getCommentCount(
-    postIds?: number[],
+    postIds: number[],
   ): Promise<CommentCountObjectType[]> {
     const result: CommentCountObjectType[] = await this.commonCommentService.getCommentCount(
       postIds,
     );
 
+    return result;
+  }
+
+  public async getTopCommentCount(): Promise<CommentCountObjectType[]> {
+    const commentCountList: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
+    console.log(commentCountList);
+    const result: CommentCountObjectType[] = commentCountList
+      .sort((target1, target2) => {
+        return target1.commentCount > target2.commentCount
+          ? -1
+          : target1.commentCount < target2.commentCount
+          ? 1
+          : 0;
+      })
+      .slice(0, 5);
+    console.log(result);
     return result;
   }
 

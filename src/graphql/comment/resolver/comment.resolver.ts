@@ -27,17 +27,7 @@ export class CommentResolver {
   @Query(returns => [CommentCountObjectType])
   public async topComment(): Promise<CommentCountObjectType[]> {
     try {
-      const commentCountList: CommentCountObjectType[] = await this.commentService.getCommentCount();
-
-      const result: CommentCountObjectType[] = commentCountList
-        .sort((target1, target2) => {
-          return target1.commentCount > target2.commentCount
-            ? -1
-            : target1.commentCount < target2.commentCount
-            ? 1
-            : 0;
-        })
-        .slice(0, 5);
+      const result: CommentCountObjectType[] = await this.commentService.getTopCommentCount();
 
       return result;
     } catch (error) {
