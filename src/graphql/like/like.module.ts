@@ -5,6 +5,6 @@ import { CommonLikeService } from '../../services/common-like.service';
 
 @Module({
   providers: [LikeService, LikeResolver, CommonLikeService],
-  exports: [LikeService],
+  exports: [LikeService, CommonLikeService],
 })
 export class LikeModule {}
