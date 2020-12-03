@@ -36,6 +36,17 @@ export class PostResolver {
     }
   }
 
+  @Query(returns => Int)
+  async totalPostCount(): Promise<number> {
+    try {
+      const totalCount: number = await this.postService.getPostCount();
+
+      return totalCount;
+    } catch (error) {
+      throw new error();
+    }
+  }
+
   @Mutation(returns => Boolean)
   public async savePost(
     @Args('post', { type: () => PostInputType }) post: PostInputType,

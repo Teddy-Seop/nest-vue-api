@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICommentInput } from '@/type/comment.type';
 import { ICommentCount } from '@/type/comment.type';
-import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
 
 @Injectable()
 export class CommonCommentService {

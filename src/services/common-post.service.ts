@@ -33,6 +33,12 @@ export class CommonPostService {
     return postList;
   }
 
+  public async getPostCount(): Promise<number> {
+    const count: number = await this.postRepository.count();
+
+    return count;
+  }
+
   public async savePost(post: IPostInput): Promise<boolean> {
     await this.postRepository.save(post);
 

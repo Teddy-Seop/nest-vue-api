@@ -52,6 +52,7 @@ type LikeCountObjectType {
 type Query {
   post(postId: Int!): PostObjectType!
   postList(page: Int!): [PostObjectType!]!
+  totalPostCount: Int!
   login(user: UserLoginInputType!): AccessTokenObjectType!
   commentList(postId: Int!): [CommentObjectType!]!
   topComment: [CommentCountObjectType!]!

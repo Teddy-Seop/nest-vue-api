@@ -34,6 +34,12 @@ export class PostService {
     return postList;
   }
 
+  public async getPostCount(): Promise<number> {
+    const count: number = await this.commonPostService.getPostCount();
+
+    return count;
+  }
+
   public async savePost(post: PostInputType): Promise<boolean> {
     const result = await this.commonPostService.savePost(post);
 
