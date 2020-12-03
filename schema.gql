@@ -27,6 +27,7 @@ type PostObjectType {
   userId: Int!
   createdAt: DateTime!
   writer: UserObjectType!
+  comments: [CommentObjectType!]!
   commentCount: CommentCountObjectType!
   likeCount: LikeCountObjectType!
 }
@@ -36,6 +37,7 @@ type CommentObjectType {
   comment: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: UserObjectType!
 }
 
 type CommentCountObjectType {

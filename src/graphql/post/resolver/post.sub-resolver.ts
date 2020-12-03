@@ -8,10 +8,13 @@ import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-ty
 import * as DataLoader from 'dataloader';
 import { LikeCountObjectType } from '../../like/type/like.object-type';
 import { LikeLoader } from '../loader/like.loader';
+import { CommentObjectType } from '../../comment/type/comment.object-type';
+import { CommonCommentService } from '@/services/common-comment.service';
 
 @Resolver(of => PostObjectType)
 export class PostSubResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+    private readonly commonCommentService: CommonCommentService) {}
 
   @ResolveField(returns => UserObjectType)
   public async writer(@Parent() post: PostObjectType): Promise<UserObjectType> {
@@ -20,6 +23,13 @@ export class PostSubResolver {
     );
 
     return user;
+  }
+
+  @ResolveField(returns => [CommentObjectType])
+  public async comments(@Parent() post: PostObjectType): Promise<CommentObjectType[]> {
+    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(post.id);
+
+    return comments;
   }
 
   @ResolveField(returns => CommentCountObjectType)

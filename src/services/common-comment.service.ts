@@ -29,6 +29,7 @@ export class CommonCommentService {
         postId,
         deletedAt: null,
       },
+      relations: ['user'],
     });
 
     return comments;
