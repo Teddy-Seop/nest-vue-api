@@ -24,5 +24,8 @@ export class UserObjectType {
 @ObjectType()
 export class AccessTokenObjectType {
   @Field(type => String)
-  access_token: string;
+  public accessToken: string;
+
+  @Field(type => Int, { nullable: true })
+  public userId?: number;
 }

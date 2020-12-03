@@ -1,8 +1,9 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { PostService } from '../service/post.service';
 import { PostObjectType } from '../type/post.object.type';
 import { PostInputType } from '../type/post.input-type';
+import { JwtAuthGuard } from '../../../modules/auth/jwt-auth.guard';
 
 @Resolver()
 export class PostResolver {
@@ -20,6 +21,7 @@ export class PostResolver {
   }
 
   @Query(returns => [PostObjectType])
+  @UseGuards(JwtAuthGuard)
   async postList(
     @Args('page', { type: () => Int }) page: number,
   ): Promise<PostObjectType[]> {
