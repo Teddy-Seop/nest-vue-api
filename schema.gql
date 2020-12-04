@@ -78,8 +78,8 @@ input UserLoginInputType {
 type Mutation {
   savePost(post: PostInputType!): Boolean!
   deletePost(postId: Int!): Boolean!
-  saveComment(comment: CommentInputType!): Boolean!
-  deleteComment(commentId: Int!): Boolean!
+  saveComment(comment: SaveCommentInputType!): [CommentObjectType!]!
+  deleteComment(comment: DeleteCommentInputType!): [CommentObjectType!]!
   saveLike(like: LikeInputType!): Boolean!
   deleteLike(like: LikeInputType!): Boolean!
 }
@@ -91,11 +91,16 @@ input PostInputType {
   userId: Int!
 }
 
-input CommentInputType {
+input SaveCommentInputType {
   id: Int
   comment: String!
   postId: Int!
   userId: Int!
+}
+
+input DeleteCommentInputType {
+  id: Int!
+  postId: Int!
 }
 
 input LikeInputType {

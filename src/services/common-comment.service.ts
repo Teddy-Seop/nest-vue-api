@@ -2,7 +2,7 @@ import { CommentEntity } from '@/models/entities';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ICommentInput } from '@/type/comment.type';
+import { IDeleteCommentInput, ISaveCommentInput } from '@/type/comment.type';
 import { ICommentCount } from '@/type/comment.type';
 
 @Injectable()
@@ -51,14 +51,16 @@ export class CommonCommentService {
     return result;
   }
 
-  public async saveComment(comment: ICommentInput): Promise<boolean> {
+  public async saveComment(comment: ISaveCommentInput): Promise<boolean> {
     await this.commentRepository.save(comment);
 
     return true;
   }
 
-  public async deleteCommentById(commentId: number): Promise<boolean> {
-    await this.commentRepository.softDelete(commentId);
+  public async deleteCommentById(
+    comment: IDeleteCommentInput,
+  ): Promise<boolean> {
+    await this.commentRepository.softDelete(comment.id);
 
     return true;
   }

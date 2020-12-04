@@ -1,12 +1,17 @@
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Resolver, Query, Mutation } from '@nestjs/graphql';
+
+import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
 import { CommentService } from '../service/comment.service';
+
 import {
   CommentObjectType,
   CommentCountObjectType,
 } from '../type/comment.object-type';
-import { CommentInputType } from '../type/comment.input-type';
-import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
+import {
+  SaveCommentInputType,
+  DeleteCommentInputType,
+} from '../type/comment.input-type';
 
 @Resolver()
 export class CommentResolver {
@@ -22,7 +27,7 @@ export class CommentResolver {
 
       return commentList;
     } catch (error) {
-      new BadRequestException('Can not get comment list');
+      throw error;
     }
   }
 
@@ -34,36 +39,41 @@ export class CommentResolver {
 
       return result;
     } catch (error) {
-      new BadRequestException('Can not get comment list');
+      throw error;
     }
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(returns => [CommentObjectType])
   @UseGuards(JwtAuthGuard)
   public async saveComment(
-    @Args('comment', { type: () => CommentInputType })
-    comment: CommentInputType,
-  ): Promise<boolean> {
+    @Args('comment', { type: () => SaveCommentInputType })
+    comment: SaveCommentInputType,
+  ): Promise<CommentObjectType[]> {
     try {
-      const result = this.commentService.saveComment(comment);
+      const comments: CommentObjectType[] = await this.commentService.saveComment(
+        comment,
+      );
 
-      return result;
+      return comments;
     } catch (error) {
-      new BadRequestException('Can not save comment');
+      throw error;
     }
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(returns => [CommentObjectType])
   @UseGuards(JwtAuthGuard)
   public async deleteComment(
-    @Args('commentId', { type: () => Int }) commentId: number,
-  ): Promise<boolean> {
+    @Args('comment', { type: () => DeleteCommentInputType })
+    comment: DeleteCommentInputType,
+  ): Promise<CommentObjectType[]> {
     try {
-      const result = await this.commentService.deleteCommentById(commentId);
+      const comments: CommentObjectType[] = await this.commentService.deleteCommentById(
+        comment,
+      );
 
-      return result;
+      return comments;
     } catch (error) {
-      new BadRequestException('Can not delete comment');
+      throw error;
     }
   }
 }
