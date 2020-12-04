@@ -1,4 +1,5 @@
-import { BadRequestException } from '@nestjs/common';
+import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Int, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { LikeService } from '../service/like.service';
 
@@ -7,6 +8,7 @@ export class LikeResolver {
   constructor(private readonly likeService: LikeService) {}
 
   @Query(returns => Boolean)
+  @UseGuards(JwtAuthGuard)
   public async like(
     @Args('postId', { type: () => Int }) postId: number,
     @Args('userId', { type: () => Int }) userId: number,
@@ -21,6 +23,7 @@ export class LikeResolver {
   }
 
   @Query(returns => Int)
+  @UseGuards(JwtAuthGuard)
   public async likeCount(
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<number> {
@@ -34,6 +37,7 @@ export class LikeResolver {
   }
 
   @Mutation(returns => Boolean)
+  @UseGuards(JwtAuthGuard)
   public async saveLike(
     @Args('postId', { type: () => Int }) postId: number,
     @Args('userId', { type: () => Int }) userId: number,
@@ -48,6 +52,7 @@ export class LikeResolver {
   }
 
   @Mutation(returns => Boolean)
+  @UseGuards(JwtAuthGuard)
   public async deleteLike(
     @Args('postId', { type: () => Int }) postId: number,
     @Args('userId', { type: () => Int }) userId: number,

@@ -10,6 +10,7 @@ export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   @Query(returns => PostObjectType)
+  @UseGuards(JwtAuthGuard)
   async post(
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<PostObjectType> {
@@ -37,6 +38,7 @@ export class PostResolver {
   }
 
   @Query(returns => Int)
+  @UseGuards(JwtAuthGuard)
   async totalPostCount(): Promise<number> {
     try {
       const totalCount: number = await this.postService.getPostCount();
@@ -48,6 +50,7 @@ export class PostResolver {
   }
 
   @Mutation(returns => Boolean)
+  @UseGuards(JwtAuthGuard)
   public async savePost(
     @Args('post', { type: () => PostInputType }) post: PostInputType,
   ): Promise<boolean> {
@@ -61,6 +64,7 @@ export class PostResolver {
   }
 
   @Mutation(returns => Boolean)
+  @UseGuards(JwtAuthGuard)
   public async deletePost(
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<boolean> {

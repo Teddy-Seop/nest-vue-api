@@ -4,8 +4,9 @@ import { CommentService } from './service/comment.service';
 import { CommonCommentService } from '../../services/common-comment.service';
 import { CommentSubResolver } from './resolver/comment.sub-resolver';
 import { PostModule } from '../post/post.module';
+import { AuthModule } from '../../modules/auth/auth.module';
 @Module({
-  imports: [forwardRef(() => PostModule)],
+  imports: [forwardRef(() => PostModule), AuthModule],
   providers: [
     // Resolvers
     CommentResolver,
