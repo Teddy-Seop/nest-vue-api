@@ -16,12 +16,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AccessTokenObjectType {
+  accessToken: String!
+  userId: Int
+}
+
 type PostObjectType {
   id: Int!
   title: String!
   contents: String!
   userId: Int!
+  createdAt: DateTime!
   writer: UserObjectType!
+  comments: [CommentObjectType!]!
+  commentCount: CommentCountObjectType!
+  likeCount: LikeCountObjectType!
 }
 
 type CommentObjectType {
@@ -29,14 +38,34 @@ type CommentObjectType {
   comment: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: UserObjectType!
+}
+
+type CommentCountObjectType {
+  postId: Int!
+  commentCount: Int!
+  post: PostObjectType
+}
+
+type LikeCountObjectType {
+  postId: Int!
+  likeCount: Int!
 }
 
 type Query {
   post(postId: Int!): PostObjectType!
   postList(page: Int!): [PostObjectType!]!
+  totalPostCount: Int!
+  login(user: UserLoginInputType!): AccessTokenObjectType!
   commentList(postId: Int!): [CommentObjectType!]!
+  topComment: [CommentCountObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likeCount(postId: Int!): Int!
+}
+
+input UserLoginInputType {
+  email: String!
+  password: String!
 }
 
 type Mutation {

@@ -2,6 +2,8 @@ import { LikeEntity } from '@/models/entities';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ILikeInput } from '@/type/like.type';
+import { ILikeCount } from '@/type/like.type';
 
 @Injectable()
 export class CommonLikeService {
@@ -33,6 +35,18 @@ export class CommonLikeService {
     return count;
   }
 
+  public async getLikeCount(postIds: number[]): Promise<ILikeCount[]> {
+    const likeCountList: ILikeCount[] = await this.likeRepository
+      .createQueryBuilder('like')
+      .select('postId')
+      .addSelect('CAST(COUNT(*) AS unsigned) AS likeCount')
+      .where('like.postId IN (:ids)', { ids: postIds })
+      .groupBy('like.postId')
+      .getRawMany();
+
+    return likeCountList;
+  }
+
   public async saveLike(postId: number, userId: number): Promise<boolean> {
     await this.likeRepository.save({
       postId,
@@ -42,11 +56,8 @@ export class CommonLikeService {
     return true;
   }
 
-  public async deleteLike(postId: number, userId: number): Promise<boolean> {
-    await this.likeRepository.softDelete({
-      postId,
-      userId,
-    });
+  public async deleteLike(deleteOption: ILikeInput): Promise<boolean> {
+    await this.likeRepository.softDelete(deleteOption);
 
     return true;
   }

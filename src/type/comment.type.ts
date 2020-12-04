@@ -4,3 +4,8 @@ export interface ICommentInput {
   postId: number;
   userId: number;
 }
+
+export interface ICommentCount {
+  postId: number;
+  commentCount: number;
+}

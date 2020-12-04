@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICommentInput } from '@/type/comment.type';
+import { ICommentCount } from '@/type/comment.type';
 
 @Injectable()
 export class CommonCommentService {
@@ -28,9 +29,26 @@ export class CommonCommentService {
         postId,
         deletedAt: null,
       },
+      relations: ['user'],
     });
 
     return comments;
+  }
+
+  public async getCommentCount(postIds?: number[]): Promise<ICommentCount[]> {
+    const queryBuilder = this.commentRepository.createQueryBuilder('comment');
+
+    if (postIds) {
+      queryBuilder.where('comment.postId IN (:ids)', { ids: postIds });
+    }
+
+    const result: ICommentCount[] = await queryBuilder
+      .select('comment.postId AS postId')
+      .addSelect('CAST(COUNT(*) AS unsigned) AS commentCount')
+      .groupBy('comment.postId')
+      .getRawMany();
+
+    return result;
   }
 
   public async saveComment(comment: ICommentInput): Promise<boolean> {
@@ -39,8 +57,16 @@ export class CommonCommentService {
     return true;
   }
 
-  public async deleteComment(commentId: number): Promise<boolean> {
+  public async deleteCommentById(commentId: number): Promise<boolean> {
     await this.commentRepository.softDelete(commentId);
+
+    return true;
+  }
+
+  public async deleteCommentByPostId(postId: number): Promise<boolean> {
+    await this.commentRepository.softDelete({
+      postId,
+    });
 
     return true;
   }

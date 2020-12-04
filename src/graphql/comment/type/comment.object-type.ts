@@ -1,6 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { PostObjectType } from '../../post/type/post.object.type';
+import { UserObjectType } from '../../user/type/user.object-type';
 
-@ObjectType()
+@ObjectType('CommentObjectType')
 export class CommentObjectType {
   @Field(type => Int)
   public id: number;
@@ -13,4 +15,19 @@ export class CommentObjectType {
 
   @Field(type => Date)
   public updatedAt: Date;
+
+  @Field(type => UserObjectType)
+  public user: UserObjectType;
+}
+
+@ObjectType('CommentCountObjectType')
+export class CommentCountObjectType {
+  @Field(type => Int)
+  postId: number;
+
+  @Field(type => Int)
+  commentCount: number;
+
+  @Field(type => PostObjectType, { nullable: true })
+  post?: PostObjectType;
 }

@@ -1,8 +1,9 @@
-import { Module, Global } from '@nestjs/common';
+import { Module, Global, DynamicModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TypeORMConfigService } from './typeorm-config';
 import * as Entities from './entities';
+import { initializeTransactionalContext } from 'typeorm-transactional-cls-hooked';
 
 @Global()
 @Module({
@@ -14,4 +15,12 @@ import * as Entities from './entities';
   controllers: [],
   providers: [],
 })
-export class DatabaseModule {}
+export class DatabaseModule {
+  public static forRoot(): DynamicModule {
+    initializeTransactionalContext();
+
+    return {
+      module: DatabaseModule,
+    };
+  }
+}

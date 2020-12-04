@@ -5,6 +5,6 @@ export class LikeInputType {
   @Field(type => Int)
   public postId: number;
 
-  @Field(type => Int)
-  public userId: number;
+  @Field(type => Int, { nullable: true })
+  public userId?: number;
 }
