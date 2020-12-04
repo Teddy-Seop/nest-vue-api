@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CommonLikeService } from '@/services/common-like.service';
 import { LikeInputType } from '../type/like.input-type';
-import { LikeCountObjectType } from '../type/like.object-type';
+import { LikeCountObjectType, LikeObjectType } from '../type/like.object-type';
 
 @Injectable()
 export class LikeService {
   constructor(private readonly commonLikeService: CommonLikeService) {}
 
-  public async getLikeCountByPostId(postId: number): Promise<number> {
-    const count = await this.commonLikeService.getLikeCountByPostId(postId);
+  public async getLikesByPostId(postId: number): Promise<LikeObjectType[]> {
+    const likes: LikeObjectType[] = await this.commonLikeService.getLikesByPostId(postId);
 
-    return count;
+    return likes;
   }
 
   public async getLikeCount(postIds: number[]): Promise<LikeCountObjectType[]> {
@@ -31,22 +31,14 @@ export class LikeService {
     }
   }
 
-  public async saveLike(postId: number, userId: number): Promise<boolean> {
-    const result = await this.commonLikeService.saveLike(postId, userId);
+  public async saveLike(like: LikeInputType): Promise<boolean> {
+    const result = await this.commonLikeService.saveLike(like);
 
     return result;
   }
 
-  public async deleteLike(postId: number, userId?: number): Promise<boolean> {
-    const deleteOption: LikeInputType = {
-      postId,
-    };
-
-    if (userId) {
-      deleteOption.userId = userId;
-    }
-
-    const result = await this.commonLikeService.deleteLike(deleteOption);
+  public async deleteLike(like: LikeInputType): Promise<boolean> {
+    const result = await this.commonLikeService.deleteLike(like);
 
     return result;
   }

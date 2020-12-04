@@ -2,6 +2,8 @@ import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Int, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { LikeService } from '../service/like.service';
+import { LikeObjectType } from '../type/like.object-type';
+import { LikeInputType } from '../type/like.input-type';
 
 @Resolver()
 export class LikeResolver {
@@ -18,51 +20,49 @@ export class LikeResolver {
 
       return hasLike;
     } catch (error) {
-      new BadRequestException('Can not get like');
+      throw error;
     }
   }
 
-  @Query(returns => Int)
+  @Query(returns => [LikeObjectType])
   @UseGuards(JwtAuthGuard)
-  public async likeCount(
+  public async likes(
     @Args('postId', { type: () => Int }) postId: number,
-  ): Promise<number> {
+  ): Promise<LikeObjectType[]> {
     try {
-      const count = await this.likeService.getLikeCountByPostId(postId);
+      const likes: LikeObjectType[] = await this.likeService.getLikesByPostId(postId);
 
-      return count;
+      return likes;
     } catch (error) {
-      new BadRequestException('Can not get like count');
+      throw error;
     }
   }
 
   @Mutation(returns => Boolean)
   @UseGuards(JwtAuthGuard)
   public async saveLike(
-    @Args('postId', { type: () => Int }) postId: number,
-    @Args('userId', { type: () => Int }) userId: number,
+    @Args('like', { type: () => LikeInputType }) like: LikeInputType,
   ): Promise<boolean> {
     try {
-      const result = await this.likeService.saveLike(postId, userId);
+      const result = await this.likeService.saveLike(like);
 
       return result;
     } catch (error) {
-      new BadRequestException('Can not save like');
+      throw error;
     }
   }
 
   @Mutation(returns => Boolean)
   @UseGuards(JwtAuthGuard)
   public async deleteLike(
-    @Args('postId', { type: () => Int }) postId: number,
-    @Args('userId', { type: () => Int }) userId: number,
+    @Args('like', { type: () => LikeInputType }) like: LikeInputType,
   ): Promise<boolean> {
     try {
-      const result = await this.likeService.deleteLike(postId, userId);
+      const result = await this.likeService.deleteLike(like);
 
       return result;
     } catch (error) {
-      new BadRequestException('Can not delete like');
+      throw error;
     }
   }
 }
