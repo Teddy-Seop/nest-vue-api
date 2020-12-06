@@ -6,15 +6,18 @@ import { Loader } from 'nestjs-dataloader';
 import { CommentLoader } from '../loader/comment.loader';
 import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
 import * as DataLoader from 'dataloader';
-import { LikeCountObjectType } from '../../like/type/like.object-type';
+import { LikeCountObjectType, LikeObjectType } from '../../like/type/like.object-type';
 import { LikeLoader } from '../loader/like.loader';
 import { CommentObjectType } from '../../comment/type/comment.object-type';
 import { CommonCommentService } from '@/services/common-comment.service';
+import { CommonLikeService } from '../../../services/common-like.service';
 
 @Resolver(of => PostObjectType)
 export class PostSubResolver {
   constructor(private readonly userService: UserService,
-    private readonly commonCommentService: CommonCommentService) {}
+    private readonly commonCommentService: CommonCommentService,
+    private readonly commonLikeService: CommonLikeService
+  ) {}
 
   @ResolveField(returns => UserObjectType)
   public async writer(@Parent() post: PostObjectType): Promise<UserObjectType> {
@@ -30,6 +33,13 @@ export class PostSubResolver {
     const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(post.id);
 
     return comments;
+  }
+
+  @ResolveField(retruns => [LikeObjectType])
+  public async likes(@Parent() post: PostObjectType): Promise<LikeObjectType[]> {
+    const likes: LikeObjectType[] = await this.commonLikeService.getLikesByPostId(post.id);
+
+    return likes;
   }
 
   @ResolveField(returns => CommentCountObjectType)

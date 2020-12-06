@@ -19,6 +19,8 @@ scalar DateTime
 type AccessTokenObjectType {
   accessToken: String!
   userId: Int
+  email: String
+  name: String
 }
 
 type PostObjectType {
@@ -29,6 +31,7 @@ type PostObjectType {
   createdAt: DateTime!
   writer: UserObjectType!
   comments: [CommentObjectType!]!
+  likes: [LikeObjectType!]!
   commentCount: CommentCountObjectType!
   likeCount: LikeCountObjectType!
 }
@@ -47,6 +50,12 @@ type CommentCountObjectType {
   post: PostObjectType
 }
 
+type LikeObjectType {
+  id: Int!
+  postId: Int!
+  userId: Int!
+}
+
 type LikeCountObjectType {
   postId: Int!
   likeCount: Int!
@@ -60,7 +69,7 @@ type Query {
   commentList(postId: Int!): [CommentObjectType!]!
   topComment: [CommentCountObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
-  likeCount(postId: Int!): Int!
+  likes(postId: Int!): [LikeObjectType!]!
 }
 
 input UserLoginInputType {
@@ -71,10 +80,10 @@ input UserLoginInputType {
 type Mutation {
   savePost(post: PostInputType!): Boolean!
   deletePost(postId: Int!): Boolean!
-  saveComment(comment: CommentInputType!): Boolean!
-  deleteComment(commentId: Int!): Boolean!
-  saveLike(userId: Int!, postId: Int!): Boolean!
-  deleteLike(userId: Int!, postId: Int!): Boolean!
+  saveComment(comment: SaveCommentInputType!): [CommentObjectType!]!
+  deleteComment(comment: DeleteCommentInputType!): [CommentObjectType!]!
+  saveLike(like: LikeInputType!): Boolean!
+  deleteLike(like: LikeInputType!): Boolean!
 }
 
 input PostInputType {
@@ -84,9 +93,19 @@ input PostInputType {
   userId: Int!
 }
 
-input CommentInputType {
+input SaveCommentInputType {
   id: Int
   comment: String!
   postId: Int!
   userId: Int!
+}
+
+input DeleteCommentInputType {
+  id: Int!
+  postId: Int!
+}
+
+input LikeInputType {
+  postId: Int!
+  userId: Int
 }

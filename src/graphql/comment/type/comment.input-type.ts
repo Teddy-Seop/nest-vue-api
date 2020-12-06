@@ -2,7 +2,7 @@ import { Field, Int, InputType } from '@nestjs/graphql';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class CommentInputType {
+export class SaveCommentInputType {
   @IsNumber()
   @IsOptional()
   @Field(type => Int, { nullable: true })
@@ -19,4 +19,15 @@ export class CommentInputType {
   @IsNumber()
   @Field(type => Int)
   public userId: number;
+}
+
+@InputType()
+export class DeleteCommentInputType {
+  @IsNumber()
+  @Field(type => Int)
+  public id: number;
+
+  @IsNumber()
+  @Field(type => Int)
+  public postId: number;
 }

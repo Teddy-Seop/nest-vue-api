@@ -28,4 +28,10 @@ export class AccessTokenObjectType {
 
   @Field(type => Int, { nullable: true })
   public userId?: number;
+
+  @Field(type => String, { nullable: true })
+  public email?: string;
+
+  @Field(type => String, { nullable: true })
+  public name?: string;
 }

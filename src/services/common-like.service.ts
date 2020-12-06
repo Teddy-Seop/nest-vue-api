@@ -24,15 +24,15 @@ export class CommonLikeService {
     return like;
   }
 
-  public async getLikeCountByPostId(postId: number): Promise<number> {
-    const count: number = await this.likeRepository.count({
+  public async getLikesByPostId(postId: number): Promise<LikeEntity[]> {
+    const likes: LikeEntity[] = await this.likeRepository.find({
       where: {
         postId,
         deletedAt: null,
       },
     });
 
-    return count;
+    return likes;
   }
 
   public async getLikeCount(postIds: number[]): Promise<ILikeCount[]> {
@@ -47,11 +47,8 @@ export class CommonLikeService {
     return likeCountList;
   }
 
-  public async saveLike(postId: number, userId: number): Promise<boolean> {
-    await this.likeRepository.save({
-      postId,
-      userId,
-    });
+  public async saveLike(like: ILikeInput): Promise<boolean> {
+    await this.likeRepository.save(like);
 
     return true;
   }

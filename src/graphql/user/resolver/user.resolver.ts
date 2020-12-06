@@ -1,8 +1,6 @@
 import { Query, Resolver, Args } from '@nestjs/graphql';
 import { UserService } from '../service/user.service';
-import {
-  AccessTokenObjectType,
-} from '../type/user.object-type';
+import { AccessTokenObjectType } from '../type/user.object-type';
 import { UserLoginInputType } from '../type/user.input-type';
 import { AuthService } from '../../../modules/auth/auth.service';
 

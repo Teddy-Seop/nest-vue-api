@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CommonCommentService } from '../../../services/common-comment.service';
 import {
+  SaveCommentInputType,
+  DeleteCommentInputType,
+} from '../type/comment.input-type';
+import {
   CommentObjectType,
   CommentCountObjectType,
 } from '../type/comment.object-type';
-import { CommentInputType } from '../type/comment.input-type';
 
 @Injectable()
 export class CommentService {
@@ -44,16 +47,28 @@ export class CommentService {
     return result;
   }
 
-  public async saveComment(comment: CommentInputType): Promise<boolean> {
-    const result = await this.commonCommentService.saveComment(comment);
+  public async saveComment(
+    comment: SaveCommentInputType,
+  ): Promise<CommentObjectType[]> {
+    await this.commonCommentService.saveComment(comment);
 
-    return result;
+    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(
+      comment.postId,
+    );
+
+    return comments;
   }
 
-  public async deleteCommentById(commentId: number): Promise<boolean> {
-    const result = await this.commonCommentService.deleteCommentById(commentId);
+  public async deleteCommentById(
+    comment: DeleteCommentInputType,
+  ): Promise<CommentObjectType[]> {
+    await this.commonCommentService.deleteCommentById(comment);
 
-    return result;
+    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(
+      comment.postId,
+    );
+
+    return comments;
   }
 
   public async deleteCommentByPostId(postId: number): Promise<boolean> {
