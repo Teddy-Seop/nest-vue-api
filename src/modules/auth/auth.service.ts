@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../graphql/user/service/user.service';
-import { AccessTokenObjectType, UserObjectType } from '../../graphql/user/type/user.object-type';
+import {
+  AccessTokenObjectType,
+  UserObjectType,
+} from '../../graphql/user/type/user.object-type';
 import { UserLoginInputType } from '../../graphql/user/type/user.input-type';
 
 @Injectable()
@@ -12,9 +15,12 @@ export class AuthService {
   ) {}
 
   public async validateUser(
-    loginUser: UserLoginInputType
+    loginUser: UserLoginInputType,
   ): Promise<UserObjectType> {
-    const user: UserObjectType = await this.userService.getUser(loginUser.email, loginUser.password);
+    const user: UserObjectType = await this.userService.getUser(
+      loginUser.email,
+      loginUser.password,
+    );
 
     if (user && user.password === loginUser.password) {
       return user;
@@ -34,6 +40,8 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(payload),
       userId: loginUser.id,
+      email: loginUser.email,
+      name: loginUser.name,
     };
   }
 }

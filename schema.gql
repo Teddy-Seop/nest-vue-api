@@ -19,6 +19,8 @@ scalar DateTime
 type AccessTokenObjectType {
   accessToken: String!
   userId: Int
+  email: String
+  name: String
 }
 
 type PostObjectType {
