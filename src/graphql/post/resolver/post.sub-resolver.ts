@@ -6,17 +6,21 @@ import { Loader } from 'nestjs-dataloader';
 import { CommentLoader } from '../loader/comment.loader';
 import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
 import * as DataLoader from 'dataloader';
-import { LikeCountObjectType, LikeObjectType } from '../../like/type/like.object-type';
+import {
+  LikeCountObjectType,
+  LikeObjectType,
+} from '../../like/type/like.object-type';
 import { LikeLoader } from '../loader/like.loader';
 import { CommentObjectType } from '../../comment/type/comment.object-type';
-import { CommonCommentService } from '@/services/common-comment.service';
-import { CommonLikeService } from '../../../services/common-like.service';
+import { CommentAdapterService } from '@/modules/adpater/comment/comment.adapter.service';
+import { LikeAdapterService } from '@/modules/adpater/like/like.adapter.service';
 
 @Resolver(of => PostObjectType)
 export class PostSubResolver {
-  constructor(private readonly userService: UserService,
-    private readonly commonCommentService: CommonCommentService,
-    private readonly commonLikeService: CommonLikeService
+  constructor(
+    private readonly userService: UserService,
+    private readonly commentAdapterService: CommentAdapterService,
+    private readonly likeAdapterService: LikeAdapterService,
   ) {}
 
   @ResolveField(returns => UserObjectType)
@@ -29,15 +33,23 @@ export class PostSubResolver {
   }
 
   @ResolveField(returns => [CommentObjectType])
-  public async comments(@Parent() post: PostObjectType): Promise<CommentObjectType[]> {
-    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(post.id);
+  public async comments(
+    @Parent() post: PostObjectType,
+  ): Promise<CommentObjectType[]> {
+    const comments: CommentObjectType[] = await this.commentAdapterService.getCommentListByPostId(
+      post.id,
+    );
 
     return comments;
   }
 
   @ResolveField(retruns => [LikeObjectType])
-  public async likes(@Parent() post: PostObjectType): Promise<LikeObjectType[]> {
-    const likes: LikeObjectType[] = await this.commonLikeService.getLikesByPostId(post.id);
+  public async likes(
+    @Parent() post: PostObjectType,
+  ): Promise<LikeObjectType[]> {
+    const likes: LikeObjectType[] = await this.likeAdapterService.getLikesByPostId(
+      post.id,
+    );
 
     return likes;
   }

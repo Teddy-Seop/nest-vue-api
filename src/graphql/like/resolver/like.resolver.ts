@@ -1,9 +1,10 @@
 import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { LikeService } from '../service/like.service';
 import { LikeObjectType } from '../type/like.object-type';
 import { LikeInputType } from '../type/like.input-type';
+import { LikeCountObjectType } from '@/graphql/like/type/like.object-type';
 
 @Resolver()
 export class LikeResolver {
@@ -30,7 +31,9 @@ export class LikeResolver {
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<LikeObjectType[]> {
     try {
-      const likes: LikeObjectType[] = await this.likeService.getLikesByPostId(postId);
+      const likes: LikeObjectType[] = await this.likeService.getLikesByPostId(
+        postId,
+      );
 
       return likes;
     } catch (error) {

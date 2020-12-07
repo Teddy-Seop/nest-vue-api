@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PostEntity } from '../models/entities/post.entity';
+import { PostEntity } from '@/models/entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { IPaginationOption, IPostInput } from '@/type/post.type';
+import { In, Repository } from 'typeorm';
+import {
+  IPaginationOption,
+  IPostInput,
+} from '@/modules/adpater/post/post.type';
 
 @Injectable()
-export class CommonPostService {
+export class PostAdapterService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
@@ -26,6 +29,17 @@ export class CommonPostService {
     const postList: PostEntity[] = await this.postRepository.find({
       ...options,
       where: {
+        deletedAt: null,
+      },
+    });
+
+    return postList;
+  }
+
+  public async getPostListByIds(postIds: number[]): Promise<PostEntity[]> {
+    const postList: PostEntity[] = await this.postRepository.find({
+      where: {
+        id: In(postIds),
         deletedAt: null,
       },
     });

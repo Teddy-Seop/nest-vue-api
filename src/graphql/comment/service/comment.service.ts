@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommonCommentService } from '../../../services/common-comment.service';
+import { CommentAdapterService } from '@/modules/adpater/comment/comment.adapter.service';
 import {
   SaveCommentInputType,
   DeleteCommentInputType,
@@ -11,10 +11,10 @@ import {
 
 @Injectable()
 export class CommentService {
-  constructor(private readonly commonCommentService: CommonCommentService) {}
+  constructor(private readonly commentAdapterService: CommentAdapterService) {}
 
   public async getCommentList(postId: number): Promise<CommentObjectType[]> {
-    const commentList: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(
+    const commentList: CommentObjectType[] = await this.commentAdapterService.getCommentListByPostId(
       postId,
     );
 
@@ -24,25 +24,9 @@ export class CommentService {
   public async getCommentCount(
     postIds: number[],
   ): Promise<CommentCountObjectType[]> {
-    const result: CommentCountObjectType[] = await this.commonCommentService.getCommentCount(
+    const result: CommentCountObjectType[] = await this.commentAdapterService.getCommentCount(
       postIds,
     );
-
-    return result;
-  }
-
-  public async getTopCommentCount(): Promise<CommentCountObjectType[]> {
-    const commentCountList: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
-
-    const result: CommentCountObjectType[] = commentCountList
-      .sort((target1, target2) => {
-        return target1.commentCount > target2.commentCount
-          ? -1
-          : target1.commentCount < target2.commentCount
-          ? 1
-          : 0;
-      })
-      .slice(0, 5);
 
     return result;
   }
@@ -50,9 +34,9 @@ export class CommentService {
   public async saveComment(
     comment: SaveCommentInputType,
   ): Promise<CommentObjectType[]> {
-    await this.commonCommentService.saveComment(comment);
+    await this.commentAdapterService.saveComment(comment);
 
-    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(
+    const comments: CommentObjectType[] = await this.commentAdapterService.getCommentListByPostId(
       comment.postId,
     );
 
@@ -62,9 +46,9 @@ export class CommentService {
   public async deleteCommentById(
     comment: DeleteCommentInputType,
   ): Promise<CommentObjectType[]> {
-    await this.commonCommentService.deleteCommentById(comment);
+    await this.commentAdapterService.deleteCommentById(comment);
 
-    const comments: CommentObjectType[] = await this.commonCommentService.getCommentListByPostId(
+    const comments: CommentObjectType[] = await this.commentAdapterService.getCommentListByPostId(
       comment.postId,
     );
 
@@ -72,7 +56,7 @@ export class CommentService {
   }
 
   public async deleteCommentByPostId(postId: number): Promise<boolean> {
-    const result = await this.commonCommentService.deleteCommentByPostId(
+    const result = await this.commentAdapterService.deleteCommentByPostId(
       postId,
     );
 

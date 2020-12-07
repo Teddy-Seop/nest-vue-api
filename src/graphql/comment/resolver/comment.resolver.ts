@@ -31,18 +31,6 @@ export class CommentResolver {
     }
   }
 
-  @Query(returns => [CommentCountObjectType])
-  @UseGuards(JwtAuthGuard)
-  public async topComment(): Promise<CommentCountObjectType[]> {
-    try {
-      const result: CommentCountObjectType[] = await this.commentService.getTopCommentCount();
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   @Mutation(returns => [CommentObjectType])
   @UseGuards(JwtAuthGuard)
   public async saveComment(

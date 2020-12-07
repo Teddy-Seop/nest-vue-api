@@ -6,6 +6,14 @@
 - GraphQL
 - MySQL 5.7
 
+## TODO
+
+- Password encryption
+
+## DONE
+
+- GraphQL 적용
+
 ## Installation
 
 ```bash
