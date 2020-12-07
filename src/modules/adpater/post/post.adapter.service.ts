@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PostEntity } from '../models/entities/post.entity';
+import { PostEntity } from '@/models/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { IPaginationOption, IPostInput } from '@/type/post.type';
+import {
+  IPaginationOption,
+  IPostInput,
+} from '@/modules/adpater/post/post.type';
 
 @Injectable()
-export class CommonPostService {
+export class PostAdapterService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,

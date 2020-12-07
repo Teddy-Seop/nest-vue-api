@@ -1,14 +1,14 @@
+import { LikeAdapterService } from '@/modules/adpater/like/like.adapter.service';
 import { Injectable } from '@nestjs/common';
-import { CommonLikeService } from '@/services/common-like.service';
 import { LikeInputType } from '../type/like.input-type';
 import { LikeCountObjectType, LikeObjectType } from '../type/like.object-type';
 
 @Injectable()
 export class LikeService {
-  constructor(private readonly commonLikeService: CommonLikeService) {}
+  constructor(private readonly likeAdapterService: LikeAdapterService) {}
 
   public async getLikesByPostId(postId: number): Promise<LikeObjectType[]> {
-    const likes: LikeObjectType[] = await this.commonLikeService.getLikesByPostId(
+    const likes: LikeObjectType[] = await this.likeAdapterService.getLikesByPostId(
       postId,
     );
 
@@ -16,7 +16,7 @@ export class LikeService {
   }
 
   public async getLikeCount(postIds: number[]): Promise<LikeCountObjectType[]> {
-    const likeCountList: LikeCountObjectType[] = await this.commonLikeService.getLikeCount(
+    const likeCountList: LikeCountObjectType[] = await this.likeAdapterService.getLikeCount(
       postIds,
     );
 
@@ -24,7 +24,7 @@ export class LikeService {
   }
 
   public async hasLike(postId: number, userId: number): Promise<boolean> {
-    const like = await this.commonLikeService.getLike(postId, userId);
+    const like = await this.likeAdapterService.getLike(postId, userId);
 
     if (like) {
       return true;
@@ -34,13 +34,13 @@ export class LikeService {
   }
 
   public async saveLike(like: LikeInputType): Promise<boolean> {
-    const result = await this.commonLikeService.saveLike(like);
+    const result = await this.likeAdapterService.saveLike(like);
 
     return result;
   }
 
   public async deleteLike(like: LikeInputType): Promise<boolean> {
-    const result = await this.commonLikeService.deleteLike(like);
+    const result = await this.likeAdapterService.deleteLike(like);
 
     return result;
   }

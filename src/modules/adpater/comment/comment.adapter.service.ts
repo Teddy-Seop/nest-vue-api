@@ -2,11 +2,14 @@ import { CommentEntity } from '@/models/entities';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IDeleteCommentInput, ISaveCommentInput } from '@/type/comment.type';
-import { ICommentCount } from '@/type/comment.type';
+import {
+  IDeleteCommentInput,
+  ISaveCommentInput,
+} from '@/modules/adpater/comment/comment.type';
+import { ICommentCount } from '@/modules/adpater/comment/comment.type';
 
 @Injectable()
-export class CommonCommentService {
+export class CommentAdapterService {
   constructor(
     @InjectRepository(CommentEntity)
     private readonly commentRepository: Repository<CommentEntity>,

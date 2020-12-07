@@ -59,7 +59,6 @@ type LikeObjectType {
 type LikeCountObjectType {
   postId: Int!
   likeCount: Int!
-  post: PostObjectType!
 }
 
 type Query {
