@@ -23,22 +23,6 @@ export class LikeService {
     return likeCountList;
   }
 
-  public async getTopLikeCount(): Promise<LikeCountObjectType[]> {
-    const likeCountList: LikeCountObjectType[] = await this.commonLikeService.getLikeCount();
-
-    const topLikeCountList: LikeCountObjectType[] = likeCountList
-      .sort((target1, target2) => {
-        return target1.likeCount > target2.likeCount
-          ? -1
-          : target1.likeCount < target2.likeCount
-          ? 1
-          : 0;
-      })
-      .slice(0, 5);
-
-    return topLikeCountList;
-  }
-
   public async hasLike(postId: number, userId: number): Promise<boolean> {
     const like = await this.commonLikeService.getLike(postId, userId);
 

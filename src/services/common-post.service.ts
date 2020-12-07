@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PostEntity } from '../models/entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { IPaginationOption, IPostInput } from '@/type/post.type';
 
 @Injectable()
@@ -26,6 +26,17 @@ export class CommonPostService {
     const postList: PostEntity[] = await this.postRepository.find({
       ...options,
       where: {
+        deletedAt: null,
+      },
+    });
+
+    return postList;
+  }
+
+  public async getPostListByIds(postIds: number[]): Promise<PostEntity[]> {
+    const postList: PostEntity[] = await this.postRepository.find({
+      where: {
+        id: In(postIds),
         deletedAt: null,
       },
     });

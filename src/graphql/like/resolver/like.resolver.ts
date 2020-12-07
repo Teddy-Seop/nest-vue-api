@@ -41,18 +41,6 @@ export class LikeResolver {
     }
   }
 
-  @Query(returns => [LikeCountObjectType])
-  @UseGuards(JwtAuthGuard)
-  public async topLike(): Promise<LikeCountObjectType[]> {
-    try {
-      const topLikeCountList: LikeCountObjectType[] = await this.likeService.getTopLikeCount();
-
-      return topLikeCountList;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   @Mutation(returns => Boolean)
   @UseGuards(JwtAuthGuard)
   public async saveLike(

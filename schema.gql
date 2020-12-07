@@ -66,12 +66,12 @@ type Query {
   post(postId: Int!): PostObjectType!
   postList(page: Int!): [PostObjectType!]!
   totalPostCount: Int!
+  topLikePostList: [PostObjectType!]!
+  topCommentPostList: [PostObjectType!]!
   login(user: UserLoginInputType!): AccessTokenObjectType!
   commentList(postId: Int!): [CommentObjectType!]!
-  topComment: [CommentCountObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likes(postId: Int!): [LikeObjectType!]!
-  topLike: [LikeCountObjectType!]!
 }
 
 input UserLoginInputType {

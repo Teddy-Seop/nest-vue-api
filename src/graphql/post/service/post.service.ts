@@ -6,6 +6,7 @@ import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CommonLikeService } from '@/services/common-like.service';
 import { CommonCommentService } from '@/services/common-comment.service';
 import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
+import { LikeCountObjectType } from '@/graphql/like/type/like.object-type';
 
 @Injectable()
 export class PostService {
@@ -39,6 +40,54 @@ export class PostService {
     const count: number = await this.commonPostService.getPostCount();
 
     return count;
+  }
+
+  public async getTopLikePostList(): Promise<PostObjectType[]> {
+    const likeCountList: LikeCountObjectType[] = await this.commonLikeService.getLikeCount();
+
+    const topLikeCountList: LikeCountObjectType[] = likeCountList
+      .sort((target1, target2) => {
+        return target1.likeCount > target2.likeCount
+          ? -1
+          : target1.likeCount < target2.likeCount
+          ? 1
+          : 0;
+      })
+      .slice(0, 5);
+
+    const postIds: number[] = topLikeCountList.map(topLikeCount => {
+      return topLikeCount.postId;
+    });
+
+    const postList: PostObjectType[] = await this.commonPostService.getPostListByIds(
+      postIds,
+    );
+
+    return postList;
+  }
+
+  public async getTopCommentPostList(): Promise<PostObjectType[]> {
+    const commentCountList: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
+
+    const topCommentCountList: CommentCountObjectType[] = commentCountList
+      .sort((target1, target2) => {
+        return target1.commentCount > target2.commentCount
+          ? -1
+          : target1.commentCount < target2.commentCount
+          ? 1
+          : 0;
+      })
+      .slice(0, 5);
+
+    const postIds: number[] = topCommentCountList.map(topCommentCount => {
+      return topCommentCount.postId;
+    });
+
+    const postList: PostObjectType[] = await this.commonPostService.getPostListByIds(
+      postIds,
+    );
+
+    return postList;
   }
 
   public async savePost(post: PostInputType): Promise<boolean> {

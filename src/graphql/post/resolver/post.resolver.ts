@@ -49,6 +49,30 @@ export class PostResolver {
     }
   }
 
+  @Query(retruns => [PostObjectType])
+  @UseGuards(JwtAuthGuard)
+  async topLikePostList(): Promise<PostObjectType[]> {
+    try {
+      const topLikePostList: PostObjectType[] = await this.postService.getTopLikePostList();
+
+      return topLikePostList;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Query(retruns => [PostObjectType])
+  @UseGuards(JwtAuthGuard)
+  async topCommentPostList(): Promise<PostObjectType[]> {
+    try {
+      const topLikePostList: PostObjectType[] = await this.postService.getTopCommentPostList();
+
+      return topLikePostList;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Mutation(returns => Boolean)
   @UseGuards(JwtAuthGuard)
   public async savePost(
