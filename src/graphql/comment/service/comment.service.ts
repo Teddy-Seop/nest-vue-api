@@ -34,7 +34,7 @@ export class CommentService {
   public async getTopCommentCount(): Promise<CommentCountObjectType[]> {
     const commentCountList: CommentCountObjectType[] = await this.commonCommentService.getCommentCount();
 
-    const result: CommentCountObjectType[] = commentCountList
+    const topCommentCountList: CommentCountObjectType[] = commentCountList
       .sort((target1, target2) => {
         return target1.commentCount > target2.commentCount
           ? -1
@@ -44,7 +44,7 @@ export class CommentService {
       })
       .slice(0, 5);
 
-    return result;
+    return topCommentCountList;
   }
 
   public async saveComment(

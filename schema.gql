@@ -59,6 +59,7 @@ type LikeObjectType {
 type LikeCountObjectType {
   postId: Int!
   likeCount: Int!
+  post: PostObjectType!
 }
 
 type Query {
@@ -70,6 +71,7 @@ type Query {
   topComment: [CommentCountObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likes(postId: Int!): [LikeObjectType!]!
+  topLike: [LikeCountObjectType!]!
 }
 
 input UserLoginInputType {

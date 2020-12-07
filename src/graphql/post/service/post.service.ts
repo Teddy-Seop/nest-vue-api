@@ -5,6 +5,7 @@ import { PostInputType } from '../type/post.input-type';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CommonLikeService } from '@/services/common-like.service';
 import { CommonCommentService } from '@/services/common-comment.service';
+import { CommentCountObjectType } from '@/graphql/comment/type/comment.object-type';
 
 @Injectable()
 export class PostService {
@@ -22,7 +23,7 @@ export class PostService {
     return post;
   }
 
-  public async getPostList(page?: number): Promise<PostObjectType[]> {
+  public async getPostList(page: number): Promise<PostObjectType[]> {
     const options = {
       skip: (page - 1) * 30,
       take: 30,

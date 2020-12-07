@@ -35,12 +35,16 @@ export class CommonLikeService {
     return likes;
   }
 
-  public async getLikeCount(postIds: number[]): Promise<ILikeCount[]> {
-    const likeCountList: ILikeCount[] = await this.likeRepository
-      .createQueryBuilder('like')
+  public async getLikeCount(postIds?: number[]): Promise<ILikeCount[]> {
+    const queryBuilder = this.likeRepository.createQueryBuilder('like');
+
+    if (postIds) {
+      queryBuilder.where('like.postId IN (:ids)', { ids: postIds });
+    }
+
+    const likeCountList: ILikeCount[] = await queryBuilder
       .select('postId')
       .addSelect('CAST(COUNT(*) AS unsigned) AS likeCount')
-      .where('like.postId IN (:ids)', { ids: postIds })
       .groupBy('like.postId')
       .getRawMany();
 
