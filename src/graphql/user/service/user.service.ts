@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserObjectType } from '@/graphql/user/type/user.object-type';
 import { UserAdapterService } from '@/modules/adpater/user/user.adapter.service';
+import { SaveUserInputType } from '../type/user.input-type';
 
 @Injectable()
 export class UserService {
@@ -24,5 +25,11 @@ export class UserService {
     );
 
     return user;
+  }
+
+  public async saveUser(user: SaveUserInputType): Promise<boolean> {
+    const result: boolean = await this.userAdapterService.saveUser(user);
+
+    return result;
   }
 }
