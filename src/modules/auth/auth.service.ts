@@ -1,36 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { UserService } from '../../graphql/user/service/user.service';
 import {
   AccessTokenObjectType,
   UserObjectType,
 } from '../../graphql/user/type/user.object-type';
 import { UserLoginInputType } from '../../graphql/user/type/user.input-type';
+import { UserAdapterService } from '../adpater/user/user.adapter.service';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly userAdapterService: UserAdapterService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
-  public async validateUser(
-    loginUser: UserLoginInputType,
+  public async checkPassword(
+    loginInfo: UserLoginInputType,
   ): Promise<UserObjectType> {
-    const user: UserObjectType = await this.userService.getUser(
-      loginUser.email,
-      loginUser.password,
+    const user: UserObjectType = await this.userAdapterService.getUserByEmail(
+      loginInfo.email,
     );
 
-    if (user && user.password === loginUser.password) {
-      return user;
+    const result = await bcrypt.compare(loginInfo.password, user.password);
+    console.log(result);
+    if (!result) {
+      return null;
     }
 
-    return null;
+    return user;
   }
 
   public async login(user: UserLoginInputType): Promise<AccessTokenObjectType> {
-    const loginUser: UserObjectType = await this.validateUser(user);
+    const loginUser: UserObjectType = await this.checkPassword(user);
     const payload = { username: user.email, sub: user.password };
 
     if (!loginUser) {

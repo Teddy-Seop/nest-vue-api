@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserObjectType } from '@/graphql/user/type/user.object-type';
 import { UserAdapterService } from '@/modules/adpater/user/user.adapter.service';
-import { SaveUserInputType } from '../type/user.input-type';
+import { SaveUserInputType, UserLoginInputType } from '../type/user.input-type';
 
 @Injectable()
 export class UserService {
@@ -31,13 +31,23 @@ export class UserService {
   public async saveUser(user: SaveUserInputType): Promise<boolean> {
     const saltRounds = 10;
 
-    await bcrypt.hash(user.password, saltRounds, async (err, hash) => {
-      if (err) throw err;
-
+    await bcrypt.hash(user.password, saltRounds).then(async hash => {
       user.password = hash;
       await this.userAdapterService.saveUser(user);
     });
 
     return true;
+  }
+
+  public async checkPassword(
+    loginInfo: UserLoginInputType,
+  ): Promise<UserObjectType> {
+    const user: UserObjectType = await this.userAdapterService.getUserByEmail(
+      loginInfo.email,
+    );
+
+    const result = await bcrypt.compare(loginInfo.password, user.password);
+
+    return result;
   }
 }

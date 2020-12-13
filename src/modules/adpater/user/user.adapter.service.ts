@@ -17,6 +17,16 @@ export class UserAdapterService {
     return user;
   }
 
+  public async getUserByEmail(email: string): Promise<UserEntity> {
+    const user: UserEntity = await this.userRepository.findOneOrFail({
+      where: {
+        email,
+      },
+    });
+
+    return user;
+  }
+
   public async getUser(email: string, password: string): Promise<UserEntity> {
     const user: UserEntity = await this.userRepository.findOne({
       where: {
