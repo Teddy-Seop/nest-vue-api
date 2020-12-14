@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { UserObjectType } from '@/graphql/user/type/user.object-type';
 import { UserAdapterService } from '@/modules/adpater/user/user.adapter.service';
-import { SaveUserInputType, UserLoginInputType } from '../type/user.input-type';
+import { SaveUserInputType } from '../type/user.input-type';
 
 @Injectable()
 export class UserService {
@@ -37,17 +36,5 @@ export class UserService {
     });
 
     return true;
-  }
-
-  public async checkPassword(
-    loginInfo: UserLoginInputType,
-  ): Promise<UserObjectType> {
-    const user: UserObjectType = await this.userAdapterService.getUserByEmail(
-      loginInfo.email,
-    );
-
-    const result = await bcrypt.compare(loginInfo.password, user.password);
-
-    return result;
   }
 }
