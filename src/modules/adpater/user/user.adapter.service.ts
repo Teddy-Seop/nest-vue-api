@@ -21,6 +21,7 @@ export class UserAdapterService {
     const user: UserEntity = await this.userRepository.findOneOrFail({
       where: {
         email,
+        deletedAt: null,
       },
     });
 
