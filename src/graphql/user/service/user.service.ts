@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { UserObjectType } from '@/graphql/user/type/user.object-type';
 import { UserAdapterService } from '@/modules/adpater/user/user.adapter.service';
 import { SaveUserInputType } from '../type/user.input-type';
