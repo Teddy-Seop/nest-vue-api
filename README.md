@@ -8,11 +8,10 @@
 
 ## TODO
 
-- Password encryption
-
 ## DONE
 
 - GraphQL 적용
+- Password encryption
 
 ## Installation
 
