@@ -32,13 +32,4 @@ export class UserResolver {
       throw error;
     }
   }
-
-  @Query(returns => Boolean)
-  public async test(
-    @Args('user', { type: () => UserLoginInputType }) user: UserLoginInputType,
-  ): Promise<boolean> {
-    await this.userService.checkPassword(user);
-
-    return true;
-  }
 }
