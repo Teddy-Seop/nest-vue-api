@@ -68,6 +68,7 @@ type Query {
   topLikePostList: [PostObjectType!]!
   topCommentPostList: [PostObjectType!]!
   login(user: UserLoginInputType!): AccessTokenObjectType!
+  test(user: UserLoginInputType!): Boolean!
   commentList(postId: Int!): [CommentObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likes(postId: Int!): [LikeObjectType!]!
@@ -81,6 +82,7 @@ input UserLoginInputType {
 type Mutation {
   savePost(post: PostInputType!): Boolean!
   deletePost(postId: Int!): Boolean!
+  saveUser(user: SaveUserInputType!): Boolean!
   saveComment(comment: SaveCommentInputType!): [CommentObjectType!]!
   deleteComment(comment: DeleteCommentInputType!): [CommentObjectType!]!
   saveLike(like: LikeInputType!): Boolean!
@@ -92,6 +94,13 @@ input PostInputType {
   title: String!
   contents: String!
   userId: Int!
+}
+
+input SaveUserInputType {
+  id: Int
+  email: String!
+  password: String!
+  name: String!
 }
 
 input SaveCommentInputType {

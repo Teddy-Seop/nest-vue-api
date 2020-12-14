@@ -2,6 +2,7 @@ import { UserEntity } from '@/models/entities';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ISaveUserInput } from '@/modules/adpater/user/user.interface';
 
 @Injectable()
 export class UserAdapterService {
@@ -16,6 +17,17 @@ export class UserAdapterService {
     return user;
   }
 
+  public async getUserByEmail(email: string): Promise<UserEntity> {
+    const user: UserEntity = await this.userRepository.findOneOrFail({
+      where: {
+        email,
+        deletedAt: null,
+      },
+    });
+
+    return user;
+  }
+
   public async getUser(email: string, password: string): Promise<UserEntity> {
     const user: UserEntity = await this.userRepository.findOne({
       where: {
@@ -26,5 +38,11 @@ export class UserAdapterService {
     });
 
     return user;
+  }
+
+  public async saveUser(user: ISaveUserInput): Promise<boolean> {
+    await this.userRepository.save(user);
+
+    return true;
   }
 }

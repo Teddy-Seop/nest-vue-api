@@ -1,8 +1,8 @@
-import { Query, Resolver, Args } from '@nestjs/graphql';
+import { Query, Resolver, Args, Mutation } from '@nestjs/graphql';
 import { UserService } from '../service/user.service';
 import { AccessTokenObjectType } from '../type/user.object-type';
-import { UserLoginInputType } from '../type/user.input-type';
-import { AuthService } from '../../../modules/auth/auth.service';
+import { UserLoginInputType, SaveUserInputType } from '../type/user.input-type';
+import { AuthService } from '@/modules/auth/auth.service';
 
 @Resolver()
 export class UserResolver {
@@ -18,5 +18,18 @@ export class UserResolver {
     const result = await this.authService.login(user);
 
     return result;
+  }
+
+  @Mutation(returns => Boolean)
+  public async saveUser(
+    @Args('user', { type: () => SaveUserInputType }) user: SaveUserInputType,
+  ): Promise<boolean> {
+    try {
+      const result: boolean = await this.userService.saveUser(user);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }

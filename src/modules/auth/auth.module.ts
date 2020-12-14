@@ -6,10 +6,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
+import { UserAdapterModule } from '../adpater/user/user.adapter.module';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
+    UserAdapterModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

@@ -2,7 +2,7 @@ import { Field, Int, InputType } from '@nestjs/graphql';
 import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class UserInputType {
+export class SaveUserInputType {
   @IsOptional()
   @Field(type => Int, { nullable: true })
   public id?: number;
