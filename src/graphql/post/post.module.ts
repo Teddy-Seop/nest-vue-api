@@ -5,7 +5,6 @@ import { PostSubResolver } from './resolver/post.sub-resolver';
 import { UserModule } from '../user/user.module';
 import { CommentModule } from '../comment/comment.module';
 import { LikeModule } from '../like/like.module';
-import { AuthModule } from '@/modules/auth/auth.module';
 import { CommentLoader } from './loader/comment.loader';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DataLoaderInterceptor } from 'nestjs-dataloader';
@@ -19,7 +18,6 @@ import { CommentAdapterModule } from '@/modules/adpater/comment/comment.adpater.
     UserModule,
     forwardRef(() => CommentModule),
     LikeModule,
-    AuthModule,
     PostAdapterModule,
     CommentAdapterModule,
     LikeAdapterModule,

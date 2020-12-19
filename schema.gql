@@ -68,7 +68,6 @@ type Query {
   topLikePostList: [PostObjectType!]!
   topCommentPostList: [PostObjectType!]!
   login(user: UserLoginInputType!): AccessTokenObjectType!
-  test(user: UserLoginInputType!): Boolean!
   commentList(postId: Int!): [CommentObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likes(postId: Int!): [LikeObjectType!]!

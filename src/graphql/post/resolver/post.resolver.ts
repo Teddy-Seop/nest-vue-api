@@ -4,10 +4,14 @@ import { PostService } from '../service/post.service';
 import { PostObjectType } from '../type/post.object.type';
 import { PostInputType } from '../type/post.input-type';
 import { JwtAuthGuard } from '../../../modules/auth/jwt-auth.guard';
+import { LoggerService } from '@/modules/logger';
 
 @Resolver()
 export class PostResolver {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly loggerSerivce: LoggerService,
+  ) {}
 
   @Query(returns => PostObjectType)
   @UseGuards(JwtAuthGuard)
