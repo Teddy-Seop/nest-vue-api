@@ -3,6 +3,7 @@ import { SessionModule } from 'nestjs-session';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { DatabaseModule } from './models';
+import { LoggerModule } from './modules/logger';
 
 import { PostModule } from './graphql/post/post.module';
 import { UserModule } from './graphql/user/user.module';
@@ -21,6 +22,7 @@ import { AuthModule } from './modules/auth/auth.module';
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
     }),
+    LoggerModule,
     AuthModule,
 
     // GraphQL Modules

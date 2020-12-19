@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { forwardRef, Global, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserModule } from '../../graphql/user/user.module';
 import { PassportModule } from '@nestjs/passport';
@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
 import { UserAdapterModule } from '../adpater/user/user.adapter.module';
 
+@Global()
 @Module({
   imports: [
     forwardRef(() => UserModule),
