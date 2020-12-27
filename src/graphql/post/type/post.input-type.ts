@@ -1,3 +1,4 @@
+import { Upload } from '@/modules/upload/upload';
 import { Field, Int, InputType } from '@nestjs/graphql';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
@@ -19,4 +20,8 @@ export class PostInputType {
   @IsNumber()
   @Field(type => Int)
   public userId: number;
+
+  @IsOptional()
+  @Field(type => [Upload], { nullable: true })
+  public files?: Upload[];
 }

@@ -23,6 +23,17 @@ type AccessTokenObjectType {
   name: String
 }
 
+type LikeObjectType {
+  id: Int!
+  postId: Int!
+  userId: Int!
+}
+
+type LikeCountObjectType {
+  postId: Int!
+  likeCount: Int!
+}
+
 type PostObjectType {
   id: Int!
   title: String!
@@ -50,17 +61,6 @@ type CommentCountObjectType {
   post: PostObjectType
 }
 
-type LikeObjectType {
-  id: Int!
-  postId: Int!
-  userId: Int!
-}
-
-type LikeCountObjectType {
-  postId: Int!
-  likeCount: Int!
-}
-
 type Query {
   post(postId: Int!): PostObjectType!
   postList(page: Int!): [PostObjectType!]!
@@ -68,7 +68,6 @@ type Query {
   topLikePostList: [PostObjectType!]!
   topCommentPostList: [PostObjectType!]!
   login(user: UserLoginInputType!): AccessTokenObjectType!
-  test(user: UserLoginInputType!): Boolean!
   commentList(postId: Int!): [CommentObjectType!]!
   like(userId: Int!, postId: Int!): Boolean!
   likes(postId: Int!): [LikeObjectType!]!
@@ -94,7 +93,11 @@ input PostInputType {
   title: String!
   contents: String!
   userId: Int!
+  files: [Upload!]
 }
+
+"""Upload custom scalar type"""
+scalar Upload
 
 input SaveUserInputType {
   id: Int

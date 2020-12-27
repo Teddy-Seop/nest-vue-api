@@ -79,6 +79,7 @@ export class PostResolver {
     @Args('post', { type: () => PostInputType }) post: PostInputType,
   ): Promise<boolean> {
     try {
+      console.log(post);
       const result = await this.postService.savePost(post);
 
       return result;
